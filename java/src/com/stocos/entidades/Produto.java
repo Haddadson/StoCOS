@@ -1,5 +1,13 @@
 package com.stocos.entidades;
 
-public class Produto {
+import org.json.JSONObject;
 
+import com.stocos.json.JsonFormatter;
+
+public class Produto implements JsonFormatter {
+
+	@Override
+	public JSONObject toJson() {
+		return null;
+	}
 }

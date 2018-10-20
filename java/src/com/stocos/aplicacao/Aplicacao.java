@@ -8,7 +8,7 @@ public class Aplicacao {
 		new Thread(() -> Servidor.iniciar()).start();
 	}
 
-	public static void main(String[] list) throws Exception {
+	public static void main(String[] list) {
 		iniciarServidor();
 	}
 }

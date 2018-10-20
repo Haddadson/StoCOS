@@ -3,8 +3,10 @@ package com.stocos.servidor;
 import java.io.PrintStream;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import org.json.JSONObject;
 import org.simpleframework.http.Query;
 import org.simpleframework.http.Request;
 import org.simpleframework.http.Response;
@@ -12,6 +14,10 @@ import org.simpleframework.http.core.Container;
 import org.simpleframework.http.core.ContainerSocketProcessor;
 import org.simpleframework.transport.connect.Connection;
 import org.simpleframework.transport.connect.SocketConnection;
+
+import com.stocos.services.IServico;
+import com.stocos.services.ProdutoService;
+import com.stocos.services.RedeCosmeticosService;
 
 public class Servidor implements Container {
 
@@ -37,40 +43,34 @@ public class Servidor implements Container {
 		System.out.println(request);
 		try {
 			Query query = request.getQuery();
+			List<String> path = new ArrayList<>(Arrays.asList(request.getPath().getSegments()));
 			PrintStream body = response.getPrintStream();
 
-			long time = System.currentTimeMillis();
 			response.setValue("Content-Type", "application/json");
 			response.setValue("Server", "HelloWorld/1.0 (Simple 4.0)");
-			response.setValue("Access-Control-Allow-Origin", "*");
-			response.setValue("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE");
-			response.setDate("Date", time);
-			response.setDate("Last-Modified", time);
+			response.setDate("Date", System.currentTimeMillis());
+			response.setDate("Last-Modified", System.currentTimeMillis());
 
-			if ("GET".equals(request.getMethod())) {
-				JSONObject resObj = new JSONObject();
-				resObj.put("status", "OK");
+			if (path.size() > 0) {
+				String dir = path.remove(0);
+				IServico servico = null;
+				if (dir.equalsIgnoreCase("redecosmeticos"))
+					servico = new RedeCosmeticosService();
+				else if (dir.equalsIgnoreCase("produto"))
+					servico = new ProdutoService();
 
-				JSONObject rede1 = new JSONObject();
-				rede1.put("nome", "Avon");
-				resObj.append("resultados", rede1);
-
-				JSONObject rede2 = new JSONObject();
-				rede2.put("nome", "Sephora");
-				resObj.append("resultados", rede2);
-
-				JSONObject rede3 = new JSONObject();
-				rede3.put("nome", "Loreal");
-				resObj.append("resultados", rede3);
-
-				JSONObject rede4 = new JSONObject();
-				rede4.put("nome", "Beauty");
-				resObj.append("resultados", rede4);
-
-				body.println(resObj.toString());
-
-			} else if ("POST".equals(request.getMethod())) {
-
+				if (path.size() > 0 && servico != null) {
+					String method = path.remove(0);
+					if (method.equalsIgnoreCase("add")) {
+						body.println(servico.add(query));
+					} else if (method.equalsIgnoreCase("get")) {
+						body.println(servico.get(query));
+					} else if (method.equalsIgnoreCase("getall")) {
+						body.println(servico.getAll(query));
+					} else if (method.equalsIgnoreCase("delete")) {
+						body.println(servico.delete(query));
+					}
+				}
 			}
 
 			body.close();

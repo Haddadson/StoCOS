@@ -1,32 +1,13 @@
 package com.stocos.entidades;
 
-public class RedeCosmeticos {
+import org.json.JSONObject;
 
-	private static int ID = 0;
+import com.stocos.json.JsonFormatter;
 
-	private String nome;
-	private int id;
-	private Setor setor;
+public class RedeCosmeticos implements JsonFormatter {
 
-	public RedeCosmeticos(String nome, Setor setor) {
-		setNome(nome);
-		setSetor(setor);
-		id = ID++;
-	}
-
-	private void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	private void setSetor(Setor setor) {
-		this.setor = setor;
-	}
-
-	public int getId() {
-		return id;
+	@Override
+	public JSONObject toJson() {
+		return null;
 	}
 }

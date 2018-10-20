@@ -1,24 +1,13 @@
 package com.stocos.entidades;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.json.JSONObject;
 
-public class Estoque {
-	private static Estoque INSTANCE;
+import com.stocos.json.JsonFormatter;
 
-	public static Estoque getInstance() {
-		if (INSTANCE == null)
-			INSTANCE = new Estoque();
-		return INSTANCE;
-	}
+public class Estoque implements JsonFormatter {
 
-	private Set<Setor> setores;
-
-	private Estoque() {
-		setores = new HashSet<>();
-	}
-
-	public Set<Setor> getSetores() {
-		return setores;
+	@Override
+	public JSONObject toJson() {
+		return null;
 	}
 }
