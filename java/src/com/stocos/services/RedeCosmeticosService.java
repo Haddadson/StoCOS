@@ -57,7 +57,7 @@ public class RedeCosmeticosService implements IServico {
 	}
 
 	@Override
-	public String modificar(Query query) {
+	public String alterar(Query query) {
 		return null;
 	}
 

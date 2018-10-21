@@ -12,6 +12,6 @@ public interface IServico {
 
 	String remover(Query query);
 
-	String modificar(Query query);
+	String alterar(Query query);
 
 }

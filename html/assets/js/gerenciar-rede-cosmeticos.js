@@ -138,7 +138,14 @@ $('#removerProduto').click(() => {
 
 // Muda a capacidade total
 $('#mudarCapacidadeBtn').click(() => {
-
+    let rede = $('#listaredes').val();
+    let novaCapacidade = $('#novaCapacidade').val();
+    $.get('http://localhost:4567/setor/alterar?nomerede=' + rede + '&novacapacidade=' + novaCapacidade, (data) => {
+        if (data) {
+            console.log(data);
+            atualizarInfos();
+        }
+    });
 });
 
 function atualizarGraficos(dados) {

@@ -85,7 +85,7 @@ public class ProdutoService implements IServico {
 	}
 
 	@Override
-	public String modificar(Query query) {
+	public String alterar(Query query) {
 		return new JSONObject().put("status", "ERRO").toString();
 	}
 

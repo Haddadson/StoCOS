@@ -74,8 +74,8 @@ public class Servidor implements Container {
 						body.println(servico.getAll(query));
 					} else if (metodo.equalsIgnoreCase("remover")) {
 						body.println(servico.remover(query));
-					} else if (metodo.equalsIgnoreCase("modificar")) {
-						body.println(servico.remover(query));
+					} else if (metodo.equalsIgnoreCase("alterar")) {
+						body.println(servico.alterar(query));
 					}
 				}
 			}

@@ -11,7 +11,8 @@ $(document).ready(() => {
         let telefone = $('#telefone').val();
         $.get('http://localhost:4567/redecosmeticos/add?nome=' + nome + '&capacidade=' + capacidade +
             '&endereco=' + endereco + '&email=' + email + '&telefone=' + telefone, (data) => {
-                console.log(data);
+                console.log('data=' + data);
+                montarLista();
             });
     });
 
