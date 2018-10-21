@@ -45,11 +45,9 @@ function atualizarInfos() {
 }
 
 function atualizarCapacidade(rede) {
-    console.log('teste ' + rede);
     // Atualizar capacidade, volumeDisponivel e volumeOcupado
     $.get('http://localhost:4567/setor/get?nome=' + rede, (data) => {
         if (data && !data.status) {
-            console.log(data);
             $('#capacidade').html(data.capacidade);
             $('#ocupacao').html(data.ocupacao);
             $('#volumeDisponivel').html(data.capacidade - data.ocupacao);
@@ -83,13 +81,16 @@ function atualizarTabela(rede) {
                     var nome = produto['nome'];
                     var marca = produto['marca'];
                     var categoria = produto['categoria'];
+                    var quantidade = produto['quantidade'];
                     var volume = produto['volume'];
+
                     $('#corpo-tabela').append(
                         '<tr><th scope="row">' + id +
                         '</th><td>' + nome +
                         '</td><td>' + marca +
                         '</td><td>' + categoria +
                         '</td><td>' + volume +
+                        '</td><td>' + quantidade +
                         '</td></tr>');
                 }
             } else {
@@ -107,7 +108,6 @@ function atualizarTabela(rede) {
 
 // Adiciona Produtos
 $('#adicionarProdutos').click(() => {
-    alert('a');
     let nome = $('#nome').val();
     let marca = $('#marca').val();
     let categoria = $('#categoria').val();
@@ -116,16 +116,24 @@ $('#adicionarProdutos').click(() => {
     let rede = $('#listaredes').val();
     $.get('http://localhost:4567/produto/add?nomerede=' + rede +
         '&nome=' + nome + '&marca=' + marca + '&categoria=' + categoria + '&volume=' + volume + '&quantidade=' + quantidade, (data) => {
-            alert('data: ' + data);
             if (data) {
-                console.log('data=' + data);
+                atualizarInfos();
             }
         });
 });
 
 // Remove um produto
 $('#removerProduto').click(() => {
+    let rede = $('#listaredes').val();
+    let idProduto = $('#idremover').val();
+    let quantidade = $('#quantidaderemover').val();
 
+    $.get('http://localhost:4567/produto/remover?nomerede=' + rede +
+        '&idproduto=' + idProduto + '&quantidade=' + quantidade, (data) => {
+            if (data) {
+                atualizarInfos();
+            }
+        });
 });
 
 // Muda a capacidade total
