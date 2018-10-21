@@ -56,6 +56,7 @@ function atualizarCapacidade(rede) {
                 volumeOcupado: data.ocupacao,
             }
             atualizarGraficos(dados);
+            atualizarGraficoCategoria();
         }
     }).done(function (data) {
 
@@ -147,6 +148,62 @@ $('#mudarCapacidadeBtn').click(() => {
         }
     });
 });
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function atualizarGraficoCategoria() {
+    var rede = $('#listaredes').val();
+    $.get('http://localhost:4567/produto/getall?nomerede=' + rede, (data) => {
+
+        var dados = [];
+
+        for (let i = 0; i < data.length; i++) {
+            if (!dados[data[i].categoria]) {
+                dados[data[i].categoria] = data[i].quantidade;
+            } else {
+                dados[data[i].categoria] += data[i].quantidade;
+            }
+        }
+
+        let categorias = [];
+        let quantidades = [];
+        let cores = [
+            "#FF6384",
+            "#36A2EB",
+            "#FFCE56"
+        ];
+        for (let i in dados) {
+            categorias.push(i);
+            quantidades.push(dados[i]);
+            cores.push(getRandomColor());
+        }
+
+        var ctx = document.getElementById('categoriasCanvas').getContext('2d');
+        var myDoughnutChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: quantidades,
+                    backgroundColor: cores,
+                    hoverBackgroundColor: cores,
+                }],
+
+                labels: categorias,
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+            }
+        });
+    });
+}
 
 function atualizarGraficos(dados) {
     var ocupado = (dados['volumeOcupado'] / dados['capacidade']) * 100.0;

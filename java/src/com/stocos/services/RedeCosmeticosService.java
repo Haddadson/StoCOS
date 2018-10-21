@@ -35,11 +35,11 @@ public class RedeCosmeticosService implements IServico {
 	public String add(Query query) {
 
 		try {
-			String nome = query.get("nome");
-			String endereco = query.get("endereco");
-			String telefone = query.get("telefone");
-			String email = query.get("email");
-			String capacidade = query.get("capacidade");
+			String nome = query.get("nome").trim();
+			String endereco = query.get("endereco").trim();
+			String telefone = query.get("telefone").trim();
+			String email = query.get("email").trim();
+			String capacidade = query.get("capacidade").trim();
 			RedeCosmeticos rede = new RedeCosmeticos(nome, endereco, email, telefone);
 			Setor setor = new Setor(rede, Double.parseDouble(capacidade));
 			if (Estoque.getInstance().adicionarSetor(setor))

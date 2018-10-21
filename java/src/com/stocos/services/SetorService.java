@@ -42,7 +42,6 @@ public class SetorService implements IServico {
 
 	@Override
 	public String alterar(Query query) {
-		System.out.println(query);
 		try {
 			String nomeRede = query.get("nomerede");
 			double novaCapacidade = Double.parseDouble(query.get("novacapacidade"));

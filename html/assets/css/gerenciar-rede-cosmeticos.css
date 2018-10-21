@@ -7,7 +7,12 @@
     box-shadow: 0px 0px 5px rgba(30, 30, 30, 0.5);
 }
 
-canvas{
+#capacidadeCanvas{
     width:100% !important;
     height:100px !important;
+}
+
+#categoriasCanvas{
+    width:100% !important;
+    height:200px !important;
 }
