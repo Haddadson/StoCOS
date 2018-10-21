@@ -5,14 +5,16 @@ $(document).ready(() => {
 
 // Busca as redes de cosméticos no servidor e atualiza o input dropdown
 function buscarRedes() {
-    $.get('http://localhost:4567/redecosmeticos/getall', (data) => {
+    $.get('http://192.168.0.3:4567/redecosmeticos/getall', (data) => {
         if (data) {
             if (data.length > 0) {
                 $('#listaredes').empty();
-                $('#listaredes').append('<option>Selecione...</option>');
                 for (var i = 0; i < data.length; i++) {
                     var rede = data[i];
-                    $('#listaredes').append('<option>' + rede.nome + '</option>');
+                    $('#listaderedes').append('<a class="list-group-item list-group-item-action" ' +
+                        'id="list-home-list" data-toggle="list" href="#list-home" onclick="atualizarInfos(this.innerHTML);" role="tab" aria-controls="home">' +
+                        rede.nome +
+                        '</a>');
                 }
             }
         }
@@ -25,28 +27,16 @@ function buscarRedes() {
     });
 }
 
-// Chamada quando uma rede de cosméticos é selecionada no dropdown
-function escolherRede() {
-    if ($("#listaredes").prop('selectedIndex') > 0) {
-        $('.nenhumarede').hide();
-        $('.divinfo').show();
-        atualizarInfos();
-    } else {
-        $('.divinfo').hide();
-        $('.nenhumarede').show();
-    }
-}
-
 // Atualiza as informações da tabela e de capacidade, de acordo com a rede selecionada
-function atualizarInfos() {
-    let rede = $('#listaredes').val();
+function atualizarInfos(rede) {
+    $('.divinfo').show();
     atualizarCapacidade(rede);
     atualizarTabela(rede);
 }
 
 function atualizarCapacidade(rede) {
     // Atualizar capacidade, volumeDisponivel e volumeOcupado
-    $.get('http://localhost:4567/setor/get?nome=' + rede, (data) => {
+    $.get('http://192.168.0.3:4567/setor/get?nome=' + rede, (data) => {
         if (data && !data.status) {
             $('#capacidade').html(data.capacidade);
             $('#ocupacao').html(data.ocupacao);
@@ -56,7 +46,7 @@ function atualizarCapacidade(rede) {
                 volumeOcupado: data.ocupacao,
             }
             atualizarGraficos(dados);
-            atualizarGraficoCategoria();
+            atualizarGraficoCategoria(rede);
         }
     }).done(function (data) {
 
@@ -70,7 +60,7 @@ function atualizarCapacidade(rede) {
 function atualizarTabela(rede) {
     $('#corpo-tabela').empty();
     var produtos = [];
-    $.get('http://localhost:4567/produto/getAll?nomerede=' + rede, (data) => {
+    $.get('http://192.168.0.3:4567/produto/getAll?nomerede=' + rede, (data) => {
         if (data && !data.status) {
             for (var i = 0; i < data.length; i++) {
                 produtos[i] = data[i];
@@ -115,7 +105,7 @@ $('#adicionarProdutos').click(() => {
     let volume = $('#volume').val();
     let quantidade = $('#quantidade').val();
     let rede = $('#listaredes').val();
-    $.get('http://localhost:4567/produto/add?nomerede=' + rede +
+    $.get('http://192.168.0.3:4567/produto/add?nomerede=' + rede +
         '&nome=' + nome + '&marca=' + marca + '&categoria=' + categoria + '&volume=' + volume + '&quantidade=' + quantidade, (data) => {
             if (data) {
                 atualizarInfos();
@@ -129,7 +119,7 @@ $('#removerProduto').click(() => {
     let idProduto = $('#idremover').val();
     let quantidade = $('#quantidaderemover').val();
 
-    $.get('http://localhost:4567/produto/remover?nomerede=' + rede +
+    $.get('http://192.168.0.3:4567/produto/remover?nomerede=' + rede +
         '&idproduto=' + idProduto + '&quantidade=' + quantidade, (data) => {
             if (data) {
                 atualizarInfos();
@@ -141,7 +131,7 @@ $('#removerProduto').click(() => {
 $('#mudarCapacidadeBtn').click(() => {
     let rede = $('#listaredes').val();
     let novaCapacidade = $('#novaCapacidade').val();
-    $.get('http://localhost:4567/setor/alterar?nomerede=' + rede + '&novacapacidade=' + novaCapacidade, (data) => {
+    $.get('http://192.168.0.3:4567/setor/alterar?nomerede=' + rede + '&novacapacidade=' + novaCapacidade, (data) => {
         if (data) {
             console.log(data);
             atualizarInfos();
@@ -158,9 +148,8 @@ function getRandomColor() {
     return color;
 }
 
-function atualizarGraficoCategoria() {
-    var rede = $('#listaredes').val();
-    $.get('http://localhost:4567/produto/getall?nomerede=' + rede, (data) => {
+function atualizarGraficoCategoria(rede) {
+    $.get('http://192.168.0.3:4567/produto/getall?nomerede=' + rede, (data) => {
 
         var dados = [];
 
