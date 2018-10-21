@@ -8,7 +8,7 @@ function buscarRedes() {
     $.get('http://192.168.0.3:4567/redecosmeticos/getall', (data) => {
         if (data) {
             if (data.length > 0) {
-                $('#listaredes').empty();
+                $('#listaderedes').empty();
                 for (var i = 0; i < data.length; i++) {
                     var rede = data[i];
                     $('#listaderedes').append('<a class="list-group-item list-group-item-action" ' +
@@ -104,37 +104,38 @@ $('#adicionarProdutos').click(() => {
     let categoria = $('#categoria').val();
     let volume = $('#volume').val();
     let quantidade = $('#quantidade').val();
-    let rede = $('#listaredes').val();
+    let rede = $('#listaderedes a.active').html();
+
     $.get('http://192.168.0.3:4567/produto/add?nomerede=' + rede +
         '&nome=' + nome + '&marca=' + marca + '&categoria=' + categoria + '&volume=' + volume + '&quantidade=' + quantidade, (data) => {
             if (data) {
-                atualizarInfos();
+                atualizarInfos(rede);
             }
         });
 });
 
 // Remove um produto
 $('#removerProduto').click(() => {
-    let rede = $('#listaredes').val();
+    let rede = $('#listaderedes a.active').html();
     let idProduto = $('#idremover').val();
     let quantidade = $('#quantidaderemover').val();
 
     $.get('http://192.168.0.3:4567/produto/remover?nomerede=' + rede +
         '&idproduto=' + idProduto + '&quantidade=' + quantidade, (data) => {
             if (data) {
-                atualizarInfos();
+                atualizarInfos(rede);
             }
         });
 });
 
 // Muda a capacidade total
 $('#mudarCapacidadeBtn').click(() => {
-    let rede = $('#listaredes').val();
+    let rede = $('#listaderedes a.active').html();
     let novaCapacidade = $('#novaCapacidade').val();
     $.get('http://192.168.0.3:4567/setor/alterar?nomerede=' + rede + '&novacapacidade=' + novaCapacidade, (data) => {
         if (data) {
             console.log(data);
-            atualizarInfos();
+            atualizarInfos(rede);
         }
     });
 });
