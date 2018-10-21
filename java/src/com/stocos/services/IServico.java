@@ -10,7 +10,7 @@ public interface IServico {
 
 	String add(Query query);
 
-	String delete(Query query);
+	String remover(Query query);
 
 	String modificar(Query query);
 

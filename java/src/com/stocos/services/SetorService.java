@@ -35,7 +35,7 @@ public class SetorService implements IServico {
 	}
 
 	@Override
-	public String delete(Query query) {
+	public String remover(Query query) {
 		return null;
 	}
 

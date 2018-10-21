@@ -42,15 +42,17 @@ public class RedeCosmeticosService implements IServico {
 			String capacidade = query.get("capacidade");
 			RedeCosmeticos rede = new RedeCosmeticos(nome, endereco, email, telefone);
 			Setor setor = new Setor(rede, Double.parseDouble(capacidade));
-			Estoque.getInstance().adicionarSetor(setor);
+			if (Estoque.getInstance().adicionarSetor(setor))
+				return "{status: OK}";
+			else
+				return "{status: DUPLICADO}";
 		} catch (Exception e) {
 			return "{status: ERRO}";
 		}
-		return "{status: ERRO}";
 	}
 
 	@Override
-	public String delete(Query query) {
+	public String remover(Query query) {
 		return null;
 	}
 

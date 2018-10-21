@@ -21,15 +21,11 @@ public class RedeCosmeticos implements JsonFormatter {
 		id = ID++;
 	}
 
-	public int getId() {
-		return id;
-	}
-
 	public void associarSetor(Setor setor) {
 		this.setor = setor;
 	}
 
-	public void setNome(String nome) {
+	private void setNome(String nome) {
 		this.nome = nome;
 	}
 
@@ -43,6 +39,10 @@ public class RedeCosmeticos implements JsonFormatter {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public String getNome() {
@@ -74,7 +74,7 @@ public class RedeCosmeticos implements JsonFormatter {
 		obj.put("telefone", getTelefone());
 		obj.put("email", getEmail());
 		if (getSetor() != null)
-			obj.put("setorId", getSetor().getId());
+			obj.put("id-setor", getSetor().getId());
 		return obj;
 	}
 }

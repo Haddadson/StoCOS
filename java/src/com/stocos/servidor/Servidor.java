@@ -15,7 +15,6 @@ import org.simpleframework.http.core.ContainerSocketProcessor;
 import org.simpleframework.transport.connect.Connection;
 import org.simpleframework.transport.connect.SocketConnection;
 
-import com.stocos.entidades.Estoque;
 import com.stocos.services.IServico;
 import com.stocos.services.ProdutoService;
 import com.stocos.services.RedeCosmeticosService;
@@ -55,7 +54,9 @@ public class Servidor implements Container {
 
 			if (path.size() > 0) {
 				String dir = path.remove(0);
+
 				IServico servico = null;
+
 				if (dir.equalsIgnoreCase("redecosmeticos"))
 					servico = new RedeCosmeticosService();
 				else if (dir.equalsIgnoreCase("produto"))
@@ -64,20 +65,20 @@ public class Servidor implements Container {
 					servico = new SetorService();
 
 				if (path.size() > 0 && servico != null) {
-					String method = path.remove(0);
-					if (method.equalsIgnoreCase("add")) {
+					String metodo = path.remove(0);
+					if (metodo.equalsIgnoreCase("add")) {
 						body.println(servico.add(query));
-					} else if (method.equalsIgnoreCase("get")) {
+					} else if (metodo.equalsIgnoreCase("get")) {
 						body.println(servico.get(query));
-					} else if (method.equalsIgnoreCase("getall")) {
+					} else if (metodo.equalsIgnoreCase("getall")) {
 						body.println(servico.getAll(query));
-					} else if (method.equalsIgnoreCase("delete")) {
-						body.println(servico.delete(query));
+					} else if (metodo.equalsIgnoreCase("remover")) {
+						body.println(servico.remover(query));
+					} else if (metodo.equalsIgnoreCase("modificar")) {
+						body.println(servico.remover(query));
 					}
 				}
 			}
-
-			System.out.println(Estoque.getInstance().getNumSetores());
 
 			body.close();
 		} catch (Exception e) {

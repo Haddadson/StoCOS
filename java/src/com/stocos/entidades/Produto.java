@@ -6,50 +6,28 @@ import com.stocos.json.JsonFormatter;
 
 public class Produto implements JsonFormatter {
 
-	private static int ID = 0; // Contador de IDs
-	private int id; // id Individual
+	private static int ID = 0; // Contador global de IDs
+	private int id; // id individual
 
 	private String nome, marca, categoria;
 	private double volume;
-	public int quantidade;
+	private int quantidade;
 
 	public Produto(String nome, String marca, String categoria, int quantidade, double volume) {
 		setNome(nome);
 		setMarca(marca);
 		setCategoria(categoria);
-		setVolume(volume);
-		quantidade = 1;
+		setVolume(volume > 0 ? volume : 1);
+		setQuantidade(quantidade > 0 ? quantidade : 1);
 		id = ID++;
+	}
+
+	public Produto(String nome, String marca, String categoria, double volume) {
+		this(nome, marca, categoria, 1, volume);
 	}
 
 	public int getId() {
 		return id;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public void setMarca(String marca) {
-		this.marca = marca;
-	}
-
-	public void setCategoria(String categoria) {
-		this.categoria = categoria;
-	}
-
-	public void setVolume(double volume) {
-		this.volume = volume;
-	}
-
-	public void aumentarQuantidade(int qnt) {
-		if (qnt > 0)
-			quantidade += qnt;
-	}
-
-	public void diminuirQuantidade(int qnt) {
-		if (qnt > 0 && quantidade - qnt >= 0)
-			quantidade -= qnt;
 	}
 
 	public String getNome() {
@@ -64,22 +42,57 @@ public class Produto implements JsonFormatter {
 		return categoria;
 	}
 
+	public int getQuantidade() {
+		return quantidade;
+	}
+
 	public double getVolume() {
 		return volume;
 	}
 
-	public int getQuantidade() {
-		return quantidade;
+	private void setQuantidade(int qnt) {
+		quantidade = qnt;
+	}
+
+	private void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	private void setMarca(String marca) {
+		this.marca = marca;
+	}
+
+	private void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+
+	private void setVolume(double volume) {
+		this.volume = volume;
+	}
+
+	public boolean aumentarQuantidade(int qnt) {
+		if (qnt > 0) {
+			quantidade += qnt;
+			return true;
+		}
+		return false;
+	}
+
+	public boolean diminuirQuantidade(int qnt) {
+		if (qnt > 0 && quantidade - qnt >= 0) {
+			quantidade -= qnt;
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Produto) {
 			Produto p = (Produto) obj;
-			if (p.getNome() == getNome() && p.getMarca() == getMarca() && p.getCategoria() == getCategoria())
-				return true;
-			else
-				return false;
+			return p.getNome() == getNome() //
+					&& p.getMarca() == getMarca() //
+					&& p.getCategoria() == getCategoria();
 		}
 		return false;
 	}
@@ -91,7 +104,8 @@ public class Produto implements JsonFormatter {
 		obj.put("nome", getNome());
 		obj.put("marca", getMarca());
 		obj.put("categoria", getCategoria());
+		obj.put("quantidade", getQuantidade());
 		obj.put("volume", getVolume());
-		return null;
+		return obj;
 	}
 }

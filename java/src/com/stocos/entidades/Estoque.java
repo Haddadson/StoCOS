@@ -24,11 +24,10 @@ public class Estoque implements JsonFormatter {
 	}
 
 	public Setor getSetor(String nomeRede) {
-		for (Setor set : setores) {
-			if (set.getRedeCosmeticos().getNome().equals(nomeRede)) {
-				return set;
-			}
-		}
+		for (Setor s : setores)
+			if (s.getRedeCosmeticos().getNome().equalsIgnoreCase(nomeRede))
+				return s;
+
 		return null;
 	}
 
@@ -41,41 +40,35 @@ public class Estoque implements JsonFormatter {
 	}
 
 	public boolean adicionarSetor(Setor setor) {
-		for (Setor s : setores) {
-			if (s.getRedeCosmeticos() != null
-					&& s.getRedeCosmeticos().getNome().equalsIgnoreCase(setor.getRedeCosmeticos().getNome())) {
+		for (Setor s : setores)
+			if (s.getRedeCosmeticos().getNome().equalsIgnoreCase(setor.getRedeCosmeticos().getNome()))
 				return false;
-			}
-		}
-		setores.add(setor);
-		return true;
+
+		return setores.add(setor);
 	}
 
-	public void removerSetor(Setor setor) {
-		setores.remove(setor);
+	public boolean removerSetor(Setor setor) {
+		return setores.remove(setor);
 	}
 
 	public double getCapacidadeTotal() {
 		double cap = 0;
-		for (Setor s : setores) {
+		for (Setor s : setores)
 			cap += s.getCapacidade();
-		}
 		return cap;
 	}
 
 	public double getOcupacaoTotal() {
 		double ocup = 0;
-		for (Setor s : setores) {
-			ocup += s.getOcupacao();
-		}
+		for (Setor s : setores)
+			ocup += s.calcularOcupacao();
 		return ocup;
 	}
 
 	public int getNumProdutos() {
 		int qnt = 0;
-		for (Setor s : setores) {
-			qnt += s.getNumProdutos();
-		}
+		for (Setor s : setores)
+			qnt += s.calcularNumProdutos();
 		return qnt;
 	}
 

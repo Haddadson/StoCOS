@@ -18,9 +18,33 @@ public class Setor implements JsonFormatter {
 
 	public Setor(RedeCosmeticos rede, double capacidade) {
 		produtos = new ArrayList<>();
-		redeCosmeticos = rede;
-		this.capacidade = capacidade;
+		setRedeCosmeticos(rede);
+		setCapacidade(capacidade);
 		id = ID++;
+	}
+
+	private void setRedeCosmeticos(RedeCosmeticos rede) {
+		this.redeCosmeticos = rede;
+	}
+
+	private void setCapacidade(double capacidade) {
+		this.capacidade = capacidade;
+	}
+
+	public boolean reduzir(double qnt) {
+		if (qnt > 0 && getCapacidade() - qnt >= calcularOcupacao()) {
+			setCapacidade(getCapacidade() - qnt);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean expandir(double qnt) {
+		if (qnt > 0) {
+			setCapacidade(getCapacidade() + qnt);
+			return true;
+		}
+		return false;
 	}
 
 	public int getId() {
@@ -35,50 +59,71 @@ public class Setor implements JsonFormatter {
 		return produtos;
 	}
 
+	public Produto getProduto(String nome, String marca, String categoria) {
+		for (Produto p : produtos) {
+			if (p.getNome().equalsIgnoreCase(nome) && p.getMarca().equalsIgnoreCase(marca)
+					&& p.getCategoria().equalsIgnoreCase(categoria))
+				return p;
+		}
+		return null;
+	}
+
 	public RedeCosmeticos getRedeCosmeticos() {
 		return redeCosmeticos;
 	}
 
-	public int getNumProdutos() {
+	public int calcularNumProdutos() {
 		int qnt = 0;
-		for (Produto p : produtos) {
+		for (Produto p : produtos)
 			qnt += p.getQuantidade();
-		}
 		return qnt;
 	}
 
-	public double getOcupacao() {
+	public double calcularOcupacao() {
 		double c = 0;
 		for (Produto p : produtos)
-			c += p.getVolume() * p.getQuantidade();
+			c += p.getQuantidade() * p.getVolume();
 		return c;
 	}
 
-	public void adicionarProduto(Produto p) {
-		double ocupacao = getOcupacao();
-		if (produtos.contains(p) && p.getVolume() * p.getQuantidade() + ocupacao <= capacidade) {
-			produtos.get(produtos.indexOf(p)).aumentarQuantidade(p.getQuantidade());
-		} else if (p.getVolume() + ocupacao <= capacidade)
-			produtos.add(p);
+	public boolean adicionarProdutos(Produto p) {
+		double ocupacao = calcularOcupacao();
+		if (produtos.contains(p) && ocupacao + (p.getVolume() * p.getQuantidade()) <= getCapacidade())
+			return produtos.get(produtos.indexOf(p)).aumentarQuantidade(p.getQuantidade());
+		else if (ocupacao + (p.getVolume() * p.getQuantidade()) <= getCapacidade())
+			return produtos.add(p);
+
+		return false;
 	}
 
-	public void removerProduto(Produto p) {
+	public boolean removerProdutos(Produto p) {
 		if (produtos.contains(p)) {
 			Produto pLista = produtos.get(produtos.indexOf(p));
-			if (pLista.getQuantidade() > 1)
-				pLista.diminuirQuantidade(p.getQuantidade());
-			else
-				produtos.remove(pLista);
+			if (pLista.getQuantidade() - p.getQuantidade() > 0)
+				return pLista.diminuirQuantidade(p.getQuantidade());
+			else if (pLista.getQuantidade() - p.getQuantidade() == 0)
+				return produtos.remove(pLista);
 		}
+		return false;
 	}
 
-	public void reduzir(double qnt) {
-		if (capacidade - qnt >= getOcupacao())
-			capacidade -= qnt;
+	public Produto getProdutoById(int id) {
+		for (Produto p : produtos) {
+			if (p.getId() == id)
+				return p;
+		}
+		return null;
 	}
 
-	public void expandir(double qnt) {
-		capacidade += qnt;
+	public boolean removerProdutos(int idProduto, int qnt) {
+		Produto p = getProdutoById(idProduto);
+		if (p != null) {
+			if (p.getQuantidade() - qnt > 0)
+				return p.diminuirQuantidade(qnt);
+			else if (p.getQuantidade() - qnt == 0)
+				return produtos.remove(p);
+		}
+		return false;
 	}
 
 	@Override
@@ -87,8 +132,9 @@ public class Setor implements JsonFormatter {
 		obj.put("id", getId());
 		obj.put("redeCosmetico", getRedeCosmeticos().getNome());
 		obj.put("redeCosmeticoId", getRedeCosmeticos().getId());
+		obj.put("numProdutos", calcularNumProdutos());
 		obj.put("capacidade", getCapacidade());
-		obj.put("ocupacao", getOcupacao());
+		obj.put("ocupacao", calcularOcupacao());
 		return obj;
 	}
 }
