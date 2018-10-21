@@ -1,6 +1,11 @@
 package com.stocos.services;
 
+import org.json.JSONArray;
 import org.simpleframework.http.Query;
+
+import com.stocos.entidades.Estoque;
+import com.stocos.entidades.Produto;
+import com.stocos.entidades.Setor;
 
 public class ProdutoService implements IServico {
 
@@ -11,7 +16,16 @@ public class ProdutoService implements IServico {
 
 	@Override
 	public String getAll(Query query) {
-		return null;
+		try {
+			Setor setor = Estoque.getInstance().getSetor(query.get("nomerede"));
+			JSONArray arr = new JSONArray();
+			for (Produto p : setor.getListaProdutos()) {
+				arr.put(p.toJson());
+			}
+			return arr.toString();
+		} catch (Exception e) {
+			return "{status: ERRO}";
+		}
 	}
 
 	@Override

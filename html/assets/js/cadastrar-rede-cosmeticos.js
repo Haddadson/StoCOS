@@ -3,13 +3,16 @@ $(document).ready(() => {
     montarLista();
 
     // Tenta realizar o cadastro
-    $('#confirmar').click(() => {
+    $('#cadastrar').click(() => {
         let nome = $('#nome').val();
         let capacidade = $('#capacidade').val();
-
-        if (nome != '' && capacidade > 0) {
-
-        }
+        let endereco = $('#endereco').val();
+        let email = $('#email').val();
+        let telefone = $('#telefone').val();
+        $.get('http://localhost:4567/redecosmeticos/add?nome=' + nome + '&capacidade=' + capacidade +
+            '&endereco=' + endereco + '&email=' + email + '&telefone=' + telefone, (data) => {
+                console.log(data);
+            });
     });
 
     // Filtra os itens da tabela
@@ -27,22 +30,18 @@ function montarLista() {
     $('#listaRedes').html('<div class="list-group-item text-secondary">Conectando...</div>');
     var lista = $("#listaRedes");
     var redesCadastradas = [];
-    $.get("http://localhost:4567/redecosmeticos", (data) => {
+    $.get("http://localhost:4567/redecosmeticos/getall", (data) => {
         if (data) {
-            if (data.status == 'OK') {
-                if (data.resultados.length > 0) {
-                    $('#listaRedes').empty();
-                    for (var i = 0; i < data.resultados.length; i++) {
-                        var rede = data.resultados[i];
-                        console.log(i + '=' + rede.nome);
-                        $('#listaRedes').append('<div class="list-group-item">' + rede.nome + '</div>');
-                    }
-                    $('#filtrarDiv').show();
-                } else {
-                    $('#listaRedes').html('<div class="list-group-item text-secondary">Nenhuma rede Cadastrada.</div>');
+            if (data.length > 0) {
+                $('#listaRedes').empty();
+                for (var i = 0; i < data.length; i++) {
+                    var rede = data[i];
+                    console.log(rede);
+                    $('#listaRedes').append('<div class="list-group-item">' + rede.nome + '</div>');
                 }
+                $('#filtrarDiv').show();
             } else {
-                $('#listaRedes').html('<div class="list-group-item text-danger">Erro - Status: ' + data.status + '</div>');
+                $('#listaRedes').html('<div class="list-group-item text-secondary">Nenhuma rede Cadastrada.</div>');
             }
         } else {
             $('#listaRedes').html('<div class="list-group-item text-danger">Não foi possível obter os dados.</div>');

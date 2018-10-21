@@ -15,9 +15,11 @@ import org.simpleframework.http.core.ContainerSocketProcessor;
 import org.simpleframework.transport.connect.Connection;
 import org.simpleframework.transport.connect.SocketConnection;
 
+import com.stocos.entidades.Estoque;
 import com.stocos.services.IServico;
 import com.stocos.services.ProdutoService;
 import com.stocos.services.RedeCosmeticosService;
+import com.stocos.services.SetorService;
 
 public class Servidor implements Container {
 
@@ -40,7 +42,6 @@ public class Servidor implements Container {
 
 	@Override
 	public void handle(Request request, Response response) {
-		System.out.println(request);
 		try {
 			Query query = request.getQuery();
 			List<String> path = new ArrayList<>(Arrays.asList(request.getPath().getSegments()));
@@ -48,6 +49,7 @@ public class Servidor implements Container {
 
 			response.setValue("Content-Type", "application/json");
 			response.setValue("Server", "HelloWorld/1.0 (Simple 4.0)");
+			response.setValue("Access-Control-Allow-Origin", "*");
 			response.setDate("Date", System.currentTimeMillis());
 			response.setDate("Last-Modified", System.currentTimeMillis());
 
@@ -58,6 +60,8 @@ public class Servidor implements Container {
 					servico = new RedeCosmeticosService();
 				else if (dir.equalsIgnoreCase("produto"))
 					servico = new ProdutoService();
+				else if (dir.equalsIgnoreCase("setor"))
+					servico = new SetorService();
 
 				if (path.size() > 0 && servico != null) {
 					String method = path.remove(0);
@@ -72,6 +76,8 @@ public class Servidor implements Container {
 					}
 				}
 			}
+
+			System.out.println(Estoque.getInstance().getNumSetores());
 
 			body.close();
 		} catch (Exception e) {

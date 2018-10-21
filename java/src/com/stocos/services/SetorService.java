@@ -1,17 +1,32 @@
 package com.stocos.services;
 
+import org.json.JSONArray;
 import org.simpleframework.http.Query;
+
+import com.stocos.entidades.Estoque;
+import com.stocos.entidades.Setor;
 
 public class SetorService implements IServico {
 
 	@Override
 	public String get(Query query) {
-		return null;
+		try {
+			return Estoque.getInstance() //
+					.getSetor(query.get("nome")) //
+					.toJson() //
+					.toString();
+		} catch (Exception e) {
+			return "{status: ERRO}";
+		}
 	}
 
 	@Override
 	public String getAll(Query query) {
-		return null;
+		JSONArray arr = new JSONArray();
+		for (Setor s : Estoque.getInstance().getListaSetores()) {
+			arr.put(s.toJson());
+		}
+		return arr.toString();
 	}
 
 	@Override
