@@ -90,9 +90,9 @@ public class Produto implements JsonFormatter {
 	public boolean equals(Object obj) {
 		if (obj instanceof Produto) {
 			Produto p = (Produto) obj;
-			return p.getNome() == getNome() //
-					&& p.getMarca() == getMarca() //
-					&& p.getCategoria() == getCategoria();
+			return p.getNome().equals(getNome()) //
+					&& p.getMarca().equals(getMarca()) //
+					&& p.getCategoria().equals(getCategoria());
 		}
 		return false;
 	}

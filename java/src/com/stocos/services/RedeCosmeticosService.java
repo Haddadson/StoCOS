@@ -33,7 +33,7 @@ public class RedeCosmeticosService implements IServico {
 
 	@Override
 	public String add(Query query) {
-		System.out.println(query);
+
 		try {
 			String nome = query.get("nome");
 			String endereco = query.get("endereco");

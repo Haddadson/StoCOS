@@ -94,7 +94,7 @@ function atualizarTabela(rede) {
                         '</td></tr>');
                 }
             } else {
-                $('#corpo-tabela').append('<tr><th scope="row"></th><td>Não há produtos cadastrados</td><td></td><td></td><td></td></tr>');
+                $('#corpo-tabela').append('<tr><th scope="row"></th><td>Não há produtos cadastrados</td><td></td><td></td><td></td><td></td></tr>');
             }
         }
     }).done(function (data) {
@@ -182,7 +182,6 @@ function atualizarGraficos(dados) {
         }
     });
 }
-
 
 // Filtra um item na tabela
 function filtrar() {
