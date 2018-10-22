@@ -151,47 +151,51 @@ function getRandomColor() {
 
 function atualizarGraficoCategoria(rede) {
     $.get('http://localhost:4567/produto/getall?nomerede=' + rede, (data) => {
+        console.log(data.length);
+        if (data.length == 0) {
+            $('#categoriasCanvas').hide();
+        } else {
+            $('#categoriasCanvas').show();
 
-        var dados = [];
-
-        for (let i = 0; i < data.length; i++) {
-            if (!dados[data[i].categoria]) {
-                dados[data[i].categoria] = data[i].quantidade;
-            } else {
-                dados[data[i].categoria] += data[i].quantidade;
+            var dados = [];
+            for (let i = 0; i < data.length; i++) {
+                if (!dados[data[i].categoria]) {
+                    dados[data[i].categoria] = data[i].quantidade;
+                } else {
+                    dados[data[i].categoria] += data[i].quantidade;
+                }
             }
-        }
-
-        let categorias = [];
-        let quantidades = [];
-        let cores = [
-            "#FF6384",
-            "#36A2EB",
-            "#FFCE56"
-        ];
-        for (let i in dados) {
-            categorias.push(i);
-            quantidades.push(dados[i]);
-            cores.push(getRandomColor());
-        }
-
-        var ctx = document.getElementById('categoriasCanvas').getContext('2d');
-        var myDoughnutChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                datasets: [{
-                    data: quantidades,
-                    backgroundColor: cores,
-                    hoverBackgroundColor: cores,
-                }],
-
-                labels: categorias,
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
+            let categorias = [];
+            let quantidades = [];
+            let cores = [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ];
+            for (let i in dados) {
+                categorias.push(i);
+                quantidades.push(dados[i]);
+                cores.push(getRandomColor());
             }
-        });
+
+            var ctx = document.getElementById('categoriasCanvas').getContext('2d');
+            var myDoughnutChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: quantidades,
+                        backgroundColor: cores,
+                        hoverBackgroundColor: cores,
+                    }],
+
+                    labels: categorias,
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                }
+            });
+        }
     });
 }
 
