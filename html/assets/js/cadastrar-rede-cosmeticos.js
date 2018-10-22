@@ -9,7 +9,7 @@ $(document).ready(() => {
         let endereco = $('#endereco').val();
         let email = $('#email').val();
         let telefone = $('#telefone').val();
-        $.get('http://localhost:4567/redecosmeticos/add?nome=' + nome + '&capacidade=' + capacidade +
+        $.get('http://192.168.0.3:4567/redecosmeticos/add?nome=' + nome + '&capacidade=' + capacidade +
             '&endereco=' + endereco + '&email=' + email + '&telefone=' + telefone, (data) => {
                 console.log('data=' + data);
                 montarLista();
@@ -31,7 +31,7 @@ function montarLista() {
     $('#listaRedes').html('<div class="list-group-item text-secondary">Conectando...</div>');
     var lista = $("#listaRedes");
     var redesCadastradas = [];
-    $.get("http://localhost:4567/redecosmeticos/getall", (data) => {
+    $.get("http://192.168.0.3:4567/redecosmeticos/getall", (data) => {
         if (data) {
             if (data.length > 0) {
                 $('#listaRedes').empty();

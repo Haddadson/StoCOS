@@ -51,25 +51,29 @@
                         <div class="form-row">
                             <div class="form-group col-md-8">
                                 <label for="inputEmail4">Nome da nova Rede de Cosméticos: </label>
-                                <input type="text" class="form-control" id="nome" placeholder="Nome">
+                                <input type="text" class="form-control" minlength="2" id="nome" placeholder="Insira o Nome da Rede" required>
                             </div>
                             <div class="form-group col-md-4">
-                                <label for="inputPassword4">Capacidade: </label>
-                                <input type="number" step=".01" class="form-control" id="capacidade" placeholder="Capacidade">
+                                <label for="inputPassword4">Capacidade do Setor: </label>
+                                <input type="number" min="0"  max="99999.99" step=".01" class="form-control" id="capacidade"
+                                    placeholder="0 - 99999.99" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputAddress">Endereço: </label>
-                            <input type="text" class="form-control" id="endereco" placeholder="Endereço">
+                            <input type="text" class="form-control" id="endereco" placeholder="Insira o Endereço da Rede"
+                                required>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-7">
                                 <label for="inputAddress">Email: </label>
-                                <input type="email" class="form-control" id="email" placeholder="Email">
+                                <input type="email" class="form-control" id="email" placeholder="Insira o Email da Rede" required>
                             </div>
                             <div class="form-group col-md-5">
                                 <label for="inputAddress2">Telefone: </label>
-                                <input type="text" class="form-control" id="telefone" placeholder="Telefone">
+                                <input type="tel" class="form-control" maxlength="14" id="telefone" placeholder="(12) 3456-7890"
+                                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required />
+
                             </div>
                         </div>
                         <small id="emailHelp" class="form-text text-muted">Verifique se a rede já não está cadastrada
