@@ -71,7 +71,7 @@ public class PainelControle extends JPanel implements ActionListener {
 		if ("iniciar".equals(e.getActionCommand())) {
 			try {
 				status.setText("Iniciando o servidor...");
-				Servidor.getInstance().init();
+				Servidor.getInstance().start();
 				status.setText("Escutando em " + Servidor.getInstance().getEndereco());
 				flagLbl.setBackground(COR_LIGADO);
 			} catch (Exception ex) {

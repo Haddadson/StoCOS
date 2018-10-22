@@ -22,15 +22,6 @@ import com.stocos.services.SetorService;
 
 public class Servidor implements Container {
 
-	private ContainerSocketProcessor servidor;
-	private SocketAddress endereco;
-	private Connection conexao;
-	private static final int PORTA = 4567;
-
-	private boolean isRunning = false;
-
-	private List<ServerListener> svListeners;
-
 	private static Servidor INSTANCE;
 
 	public static Servidor getInstance() {
@@ -39,11 +30,21 @@ public class Servidor implements Container {
 		return INSTANCE;
 	}
 
+	private ContainerSocketProcessor servidor;
+	private SocketAddress endereco;
+	private Connection conexao;
+
+	private static final int PORTA = 4567;
+
+	private boolean isRunning = false;
+
+	private List<ServerListener> svListeners;
+
 	private Servidor() {
 		svListeners = new ArrayList<>();
 	}
 
-	public void init() {
+	public void start() {
 		if (isRunning)
 			return;
 		try {
@@ -55,6 +56,8 @@ public class Servidor implements Container {
 			isRunning = true;
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			svListeners.forEach(l -> l.onServerStart());
 		}
 	}
 
@@ -74,6 +77,7 @@ public class Servidor implements Container {
 			conexao = null;
 			servidor = null;
 			isRunning = false;
+			svListeners.forEach(l -> l.onServerStop());
 		}
 	}
 
@@ -88,7 +92,7 @@ public class Servidor implements Container {
 			List<String> path = new ArrayList<>(Arrays.asList(request.getPath().getSegments()));
 			PrintStream body = response.getPrintStream();
 
-			svListeners.forEach(l -> l.onRequest(request));
+			svListeners.forEach(l -> l.onServerRequest(request));
 
 			response.setValue("Content-Type", "application/json");
 			response.setValue("Server", "HelloWorld/1.0 (Simple 4.0)");

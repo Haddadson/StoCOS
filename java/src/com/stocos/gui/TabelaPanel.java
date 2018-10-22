@@ -35,13 +35,22 @@ public class TabelaPanel extends JTable implements ServerListener {
 	}
 
 	@Override
-	public void onRequest(Request request) {
+	public void onServerRequest(Request request) {
 		String method = request.getMethod();
 		String address = request.getClientAddress().toString();
 		String query = request.getQuery().toString();
 		request.getClientAddress().toString();
 		String[] row = { method, address, query };
 		model.addRow(row);
+	}
+
+	@Override
+	public void onServerStart() {
+		model.setRowCount(0);
+	}
+
+	@Override
+	public void onServerStop() {
 	}
 
 }
