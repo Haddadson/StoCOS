@@ -22,21 +22,63 @@ import com.stocos.services.SetorService;
 
 public class Servidor implements Container {
 
-	public static void iniciar() {
+	private ContainerSocketProcessor servidor;
+	private SocketAddress endereco;
+	private Connection conexao;
+	private static final int PORTA = 4567;
+
+	private boolean isRunning = false;
+
+	private List<ServerListener> svListeners;
+
+	private static Servidor INSTANCE;
+
+	public static Servidor getInstance() {
+		if (INSTANCE == null)
+			INSTANCE = new Servidor();
+		return INSTANCE;
+	}
+
+	private Servidor() {
+		svListeners = new ArrayList<>();
+	}
+
+	public void init() {
+		if (isRunning)
+			return;
 		try {
-			int porta = 4567;
-			Container container = new Servidor();
-			ContainerSocketProcessor servidor = new ContainerSocketProcessor(container);
-			Connection conexao = new SocketConnection(servidor);
-			SocketAddress endereco = new InetSocketAddress(porta);
+			Container container = getInstance();
+			servidor = new ContainerSocketProcessor(container);
+			conexao = new SocketConnection(servidor);
+			endereco = new InetSocketAddress(PORTA);
 			conexao.connect(endereco);
-			System.out.println("Tecle ENTER para interromper o servidor...");
-			System.in.read();
+			isRunning = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public String getEndereco() {
+		return "http://localhost:" + PORTA + "...";
+	}
+
+	public void stop() {
+		if (!isRunning)
+			return;
+		try {
 			conexao.close();
 			servidor.stop();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			conexao = null;
+			servidor = null;
+			isRunning = false;
 		}
+	}
+
+	public void addServerListener(ServerListener sl) {
+		svListeners.add(sl);
 	}
 
 	@Override
@@ -45,6 +87,8 @@ public class Servidor implements Container {
 			Query query = request.getQuery();
 			List<String> path = new ArrayList<>(Arrays.asList(request.getPath().getSegments()));
 			PrintStream body = response.getPrintStream();
+
+			svListeners.forEach(l -> l.onRequest(request));
 
 			response.setValue("Content-Type", "application/json");
 			response.setValue("Server", "HelloWorld/1.0 (Simple 4.0)");

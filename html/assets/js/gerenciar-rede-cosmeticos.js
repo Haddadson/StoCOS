@@ -5,7 +5,7 @@ $(document).ready(() => {
 
 // Busca as redes de cosméticos no servidor e atualiza o input dropdown
 function buscarRedes() {
-    $.get('http://192.168.0.3:4567/redecosmeticos/getall', (data) => {
+    $.get('http://localhost:4567/redecosmeticos/getall', (data) => {
         if (data) {
             if (data.length > 0) {
                 $('#listaderedes').empty();
@@ -36,7 +36,7 @@ function atualizarInfos(rede) {
 
 function atualizarCapacidade(rede) {
     // Atualizar capacidade, volumeDisponivel e volumeOcupado
-    $.get('http://192.168.0.3:4567/setor/get?nome=' + rede, (data) => {
+    $.get('http://localhost:4567/setor/get?nome=' + rede, (data) => {
         if (data && !data.status) {
             $('#capacidade').html(data.capacidade);
             $('#ocupacao').html(data.ocupacao);
@@ -60,7 +60,7 @@ function atualizarCapacidade(rede) {
 function atualizarTabela(rede) {
     $('#corpo-tabela').empty();
     var produtos = [];
-    $.get('http://192.168.0.3:4567/produto/getAll?nomerede=' + rede, (data) => {
+    $.get('http://localhost:4567/produto/getAll?nomerede=' + rede, (data) => {
         if (data && !data.status) {
             for (var i = 0; i < data.length; i++) {
                 produtos[i] = data[i];
@@ -106,7 +106,7 @@ $('#adicionarProdutos').click(() => {
     let quantidade = $('#quantidade').val();
     let rede = $('#listaderedes a.active').html();
 
-    $.get('http://192.168.0.3:4567/produto/add?nomerede=' + rede +
+    $.get('http://localhost:4567/produto/add?nomerede=' + rede +
         '&nome=' + nome + '&marca=' + marca + '&categoria=' + categoria + '&volume=' + volume + '&quantidade=' + quantidade, (data) => {
             if (data) {
                 atualizarInfos(rede);
@@ -120,7 +120,7 @@ $('#removerProduto').click(() => {
     let idProduto = $('#idremover').val();
     let quantidade = $('#quantidaderemover').val();
 
-    $.get('http://192.168.0.3:4567/produto/remover?nomerede=' + rede +
+    $.get('http://localhost:4567/produto/remover?nomerede=' + rede +
         '&idproduto=' + idProduto + '&quantidade=' + quantidade, (data) => {
             if (data) {
                 atualizarInfos(rede);
@@ -132,7 +132,7 @@ $('#removerProduto').click(() => {
 $('#mudarCapacidadeBtn').click(() => {
     let rede = $('#listaderedes a.active').html();
     let novaCapacidade = $('#novaCapacidade').val();
-    $.get('http://192.168.0.3:4567/setor/alterar?nomerede=' + rede + '&novacapacidade=' + novaCapacidade, (data) => {
+    $.get('http://localhost:4567/setor/alterar?nomerede=' + rede + '&novacapacidade=' + novaCapacidade, (data) => {
         if (data) {
             console.log(data);
             atualizarInfos(rede);
@@ -150,7 +150,7 @@ function getRandomColor() {
 }
 
 function atualizarGraficoCategoria(rede) {
-    $.get('http://192.168.0.3:4567/produto/getall?nomerede=' + rede, (data) => {
+    $.get('http://localhost:4567/produto/getall?nomerede=' + rede, (data) => {
 
         var dados = [];
 

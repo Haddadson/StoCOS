@@ -1,14 +1,14 @@
 package com.stocos.aplicacao;
 
-import com.stocos.servidor.Servidor;
+import java.awt.EventQueue;
+
+import com.stocos.gui.Janela;
 
 public class Aplicacao {
 
-	private static void iniciarServidor() {
-		new Thread(() -> Servidor.iniciar()).start();
-	}
-
 	public static void main(String[] list) {
-		iniciarServidor();
+		EventQueue.invokeLater(() -> {
+			Janela.getInstance().setVisible(true);
+		});
 	}
 }
