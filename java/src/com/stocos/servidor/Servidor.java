@@ -128,6 +128,8 @@ public class Servidor implements Container {
 				}
 			}
 
+			svListeners.forEach(l -> l.onServerResponse(response));
+
 			body.close();
 		} catch (Exception e) {
 			e.printStackTrace();

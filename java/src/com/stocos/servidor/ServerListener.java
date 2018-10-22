@@ -1,6 +1,7 @@
 package com.stocos.servidor;
 
 import org.simpleframework.http.Request;
+import org.simpleframework.http.Response;
 
 public interface ServerListener {
 
@@ -9,5 +10,7 @@ public interface ServerListener {
 	void onServerStop();
 
 	void onServerRequest(Request request);
+	
+	void onServerResponse(Response response);
 
 }

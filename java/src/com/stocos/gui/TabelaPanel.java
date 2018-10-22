@@ -4,6 +4,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import org.simpleframework.http.Request;
+import org.simpleframework.http.Response;
 
 import com.stocos.servidor.ServerListener;
 import com.stocos.servidor.Servidor;
@@ -51,6 +52,10 @@ public class TabelaPanel extends JTable implements ServerListener {
 
 	@Override
 	public void onServerStop() {
+	}
+
+	@Override
+	public void onServerResponse(Response response) {
 	}
 
 }
