@@ -33,6 +33,7 @@ public class Janela extends JFrame implements WindowListener {
 		initComponents();
 		pack();
 		setLocationRelativeTo(null);
+		setAlwaysOnTop(true);
 		addWindowListener(this);
 	}
 

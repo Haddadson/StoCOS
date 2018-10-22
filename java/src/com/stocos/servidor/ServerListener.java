@@ -11,6 +11,6 @@ public interface ServerListener {
 
 	void onServerRequest(Request request);
 	
-	void onServerResponse(Response response);
+	void onServerResponse(Response response, String data);
 
 }

@@ -53,12 +53,12 @@ public class RedeCosmeticosService implements IServico {
 
 	@Override
 	public String remover(Query query) {
-		return null;
+		return "{status: INDISPONIVEL}";
 	}
 
 	@Override
 	public String alterar(Query query) {
-		return null;
+		return "{status: INDISPONIVEL}";
 	}
 
 }

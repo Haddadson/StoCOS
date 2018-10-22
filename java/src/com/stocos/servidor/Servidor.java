@@ -90,12 +90,19 @@ public class Servidor implements Container {
 		try {
 			Query query = request.getQuery();
 			List<String> path = new ArrayList<>(Arrays.asList(request.getPath().getSegments()));
-			PrintStream body = response.getPrintStream();
+			StringBuilder bodySB = new StringBuilder();
+			PrintStream body = new PrintStream(response.getPrintStream()) {
+				@Override
+				public void println(String s) {
+					super.println(s);
+					bodySB.append(s);
+				}
+			};
 
 			svListeners.forEach(l -> l.onServerRequest(request));
 
 			response.setValue("Content-Type", "application/json");
-			response.setValue("Server", "HelloWorld/1.0 (Simple 4.0)");
+			response.setValue("Server", "StoCOS/1.0 (Simple 4.0)");
 			response.setValue("Access-Control-Allow-Origin", "*");
 			response.setDate("Date", System.currentTimeMillis());
 			response.setDate("Last-Modified", System.currentTimeMillis());
@@ -128,7 +135,7 @@ public class Servidor implements Container {
 				}
 			}
 
-			svListeners.forEach(l -> l.onServerResponse(response));
+			svListeners.forEach(l -> l.onServerResponse(response, bodySB.toString()));
 
 			body.close();
 		} catch (Exception e) {
