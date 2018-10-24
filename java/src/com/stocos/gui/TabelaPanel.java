@@ -1,5 +1,8 @@
 package com.stocos.gui;
 
+import java.awt.Color;
+import java.awt.Font;
+
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -29,7 +32,7 @@ public class TabelaPanel extends JTable implements ServerListener {
 		Servidor.getInstance().addServerListener(this);
 	}
 
-	private void initComponents() {
+	private void initModel() {
 		model = new DefaultTableModel() {
 			private static final long serialVersionUID = 1L;
 
@@ -39,9 +42,28 @@ public class TabelaPanel extends JTable implements ServerListener {
 			}
 		};
 		model.setColumnIdentifiers(cabecalho);
-		setRowHeight(getRowHeight() + 20);
 		setModel(model);
+	}
+
+	private void initAparencia() {
+		setRowHeight(getRowHeight() + 20);
 		setFillsViewportHeight(true);
+		setBackground(new Color(240, 240, 240));
+		setForeground(Color.BLACK);
+		setFont(new Font("Console", Font.BOLD, 14));
+		setGridColor(new Color(220, 220, 220));
+		setShowGrid(true);
+	}
+
+	private void ajustarTamanhoColunas() {
+		getColumnModel().getColumn(0).setMinWidth(150);
+		getColumnModel().getColumn(0).setMaxWidth(150);
+	}
+
+	private void initComponents() {
+		initModel();
+		initAparencia();
+		ajustarTamanhoColunas();
 	}
 
 	public void limpar() {
