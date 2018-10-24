@@ -28,8 +28,8 @@ public class PainelNotificacao extends JPanel implements ServerListener {
 	private JTextField status;
 	private JLabel flagLbl;
 
-	private static final Color COR_DESLIGADO = new Color(220, 10, 10);
-	private static final Color COR_LIGADO = new Color(10, 220, 10);
+	private static final Color COR_DESLIGADO = new Color(60, 60, 60);
+	private static final Color COR_LIGADO = new Color(60, 140, 60);
 
 	private static PainelNotificacao INSTANCE;
 
@@ -50,7 +50,6 @@ public class PainelNotificacao extends JPanel implements ServerListener {
 		flagLbl.setPreferredSize(new Dimension(30, 30));
 		flagLbl.setMinimumSize(new Dimension(30, 30));
 		flagLbl.setMaximumSize(new Dimension(30, 30));
-		add(flagLbl);
 
 		status = new JTextField(30);
 		status.setEditable(false);
@@ -63,14 +62,14 @@ public class PainelNotificacao extends JPanel implements ServerListener {
 
 	@Override
 	public void onServerStart(Servidor servidor) {
+		status.setBackground(COR_LIGADO);
 		status.setText("O Servidor está ligado em: " + servidor.getEndereco());
-		flagLbl.setBackground(COR_LIGADO);
 	}
 
 	@Override
 	public void onServerStop(Servidor servidor) {
+		status.setBackground(COR_DESLIGADO);
 		status.setText("O Servidor está desligado.");
-		flagLbl.setBackground(COR_DESLIGADO);
 	}
 
 	@Override

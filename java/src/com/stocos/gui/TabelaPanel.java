@@ -1,10 +1,15 @@
 package com.stocos.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import org.simpleframework.http.Request;
 import org.simpleframework.http.Response;
@@ -47,7 +52,7 @@ public class TabelaPanel extends JTable implements ServerListener {
 
 	private void initAparencia() {
 		setRowHeight(getRowHeight() + 20);
-		setFillsViewportHeight(true);
+		setFillsViewportHeight(false);
 		setBackground(new Color(240, 240, 240));
 		setForeground(Color.BLACK);
 		setFont(new Font("Console", Font.BOLD, 14));
@@ -55,15 +60,34 @@ public class TabelaPanel extends JTable implements ServerListener {
 		setShowGrid(true);
 	}
 
-	private void ajustarTamanhoColunas() {
+	private void configurarColunas() {
 		getColumnModel().getColumn(0).setMinWidth(150);
 		getColumnModel().getColumn(0).setMaxWidth(150);
+
+		getColumnModel().getColumn(0).setCellRenderer(new TableCellRenderer() {
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object obj, boolean selected, boolean hasFocus,
+					int row, int column) {
+
+				JLabel lbl = new JLabel((String) obj);
+				lbl.setBorder(BorderFactory.createEmptyBorder(3, 10, 3, 3));
+				lbl.setFont(new Font("Console", Font.BOLD, 15));
+
+				if (obj.equals("REQUISIÇÃO")) {
+					lbl.setIcon(new ImageIcon("res/icones/down-arrow.png"));
+				} else if (obj.equals("RESPOSTA")) {
+					lbl.setIcon(new ImageIcon("res/icones/up-arrow.png"));
+				}
+				return lbl;
+			}
+		});
+
 	}
 
 	private void initComponents() {
 		initModel();
 		initAparencia();
-		ajustarTamanhoColunas();
+		configurarColunas();
 	}
 
 	public void limpar() {
@@ -73,7 +97,7 @@ public class TabelaPanel extends JTable implements ServerListener {
 	@Override
 	public void onServerRequest(Request request) {
 		String query = request.getPath() + "?" + request.getQuery().toString();
-		String[] row = { "REQUEST", query };
+		String[] row = { "REQUISIÇÃO", query };
 		model.addRow(row);
 	}
 
@@ -88,7 +112,7 @@ public class TabelaPanel extends JTable implements ServerListener {
 
 	@Override
 	public void onServerResponse(Response response, String data) {
-		String[] row = { "RESPONSE", data };
+		String[] row = { "RESPOSTA", data };
 		model.addRow(row);
 	}
 

@@ -1,5 +1,6 @@
 package com.stocos.gui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -30,20 +31,21 @@ public class ToolBar extends JToolBar implements ActionListener {
 	}
 
 	private void initComponents() {
-		setFloatable(false);
+		setOrientation(JToolBar.VERTICAL);
+		setBorder(BorderFactory.createEtchedBorder());
 
 		JToggleButton tbtn;
 		ButtonGroup btnGroup = new ButtonGroup();
 
 		tbtn = new JToggleButton(new ImageIcon("res/icones/play.png"));
-		tbtn.setBorder(BorderFactory.createEtchedBorder());
+		tbtn.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		tbtn.setActionCommand("iniciar");
 		tbtn.addActionListener(this);
 		btnGroup.add(tbtn);
 		add(tbtn);
 
 		tbtn = new JToggleButton(new ImageIcon("res/icones/stop.png"));
-		tbtn.setBorder(BorderFactory.createEtchedBorder());
+		tbtn.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		tbtn.setSelected(true);
 		tbtn.setActionCommand("parar");
 		tbtn.addActionListener(this);
@@ -52,7 +54,7 @@ public class ToolBar extends JToolBar implements ActionListener {
 
 		JButton btn;
 		btn = new JButton(new ImageIcon("res/icones/settings.png"));
-		btn.setBorder(BorderFactory.createEtchedBorder());
+		btn.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		btn.setToolTipText("Mudar Porta");
 		btn.setActionCommand("porta");
 		btn.addActionListener(this);
@@ -61,7 +63,7 @@ public class ToolBar extends JToolBar implements ActionListener {
 		add(Box.createHorizontalGlue());
 
 		btn = new JButton(new ImageIcon("res/icones/clear.png"));
-		btn.setBorder(BorderFactory.createEtchedBorder());
+		btn.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		btn.setToolTipText("Limpar Tabela");
 		btn.setActionCommand("limpar");
 		btn.addActionListener(this);

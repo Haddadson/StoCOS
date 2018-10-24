@@ -38,7 +38,7 @@ public class Janela extends JFrame implements WindowListener {
 	}
 	
 	private void initToolBar() {
-		getContentPane().add(ToolBar.getInstance(), BorderLayout.NORTH);
+		getContentPane().add(ToolBar.getInstance(), BorderLayout.WEST);
 	}
 
 	private static void setLookAndFeel() {
