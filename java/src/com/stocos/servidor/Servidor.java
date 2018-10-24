@@ -34,7 +34,7 @@ public class Servidor implements Container {
 	private SocketAddress endereco;
 	private Connection conexao;
 
-	private static final int PORTA = 4567;
+	private static int PORTA = 4567;
 
 	private boolean isRunning = false;
 
@@ -57,7 +57,7 @@ public class Servidor implements Container {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			svListeners.forEach(l -> l.onServerStart());
+			svListeners.forEach(l -> l.onServerStart(this));
 		}
 	}
 
@@ -77,12 +77,18 @@ public class Servidor implements Container {
 			conexao = null;
 			servidor = null;
 			isRunning = false;
-			svListeners.forEach(l -> l.onServerStop());
+			svListeners.forEach(l -> l.onServerStop(this));
 		}
 	}
 
 	public void addServerListener(ServerListener sl) {
 		svListeners.add(sl);
+	}
+
+	public void setPorta(int porta) {
+		if (porta > 0) {
+			PORTA = porta;
+		}
 	}
 
 	@Override

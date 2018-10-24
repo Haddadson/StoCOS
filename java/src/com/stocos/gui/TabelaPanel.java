@@ -12,6 +12,14 @@ import com.stocos.servidor.Servidor;
 public class TabelaPanel extends JTable implements ServerListener {
 	private static final long serialVersionUID = 1L;
 
+	private static TabelaPanel INSTANCE;
+
+	public static TabelaPanel getInstance() {
+		if (INSTANCE == null)
+			INSTANCE = new TabelaPanel();
+		return INSTANCE;
+	}
+
 	private String[] cabecalho = { "Tipo", "Dados" };
 
 	private DefaultTableModel model;
@@ -36,6 +44,10 @@ public class TabelaPanel extends JTable implements ServerListener {
 		setFillsViewportHeight(true);
 	}
 
+	public void limpar() {
+		model.setRowCount(0);
+	}
+
 	@Override
 	public void onServerRequest(Request request) {
 		String query = request.getPath() + "?" + request.getQuery().toString();
@@ -44,12 +56,12 @@ public class TabelaPanel extends JTable implements ServerListener {
 	}
 
 	@Override
-	public void onServerStart() {
-		model.setRowCount(0);
+	public void onServerStart(Servidor servidor) {
+		limpar();
 	}
 
 	@Override
-	public void onServerStop() {
+	public void onServerStop(Servidor servidor) {
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -17,8 +18,6 @@ public class Janela extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
 
 	private static Janela INSTANCE;
-
-	private TabelaPanel tabelaPanel;
 
 	public static Janela getInstance() {
 		if (INSTANCE == null)
@@ -31,14 +30,15 @@ public class Janela extends JFrame implements WindowListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLookAndFeel();
 		initComponents();
+		initToolBar();
 		pack();
 		setLocationRelativeTo(null);
 		setAlwaysOnTop(true);
 		addWindowListener(this);
 	}
-
-	public TabelaPanel getTabelaPanel() {
-		return tabelaPanel;
+	
+	private void initToolBar() {
+		getContentPane().add(ToolBar.getInstance(), BorderLayout.NORTH);
 	}
 
 	private static void setLookAndFeel() {
@@ -58,9 +58,9 @@ public class Janela extends JFrame implements WindowListener {
 	private void initComponents() {
 		JPanel painelPrincipal = new JPanel(new BorderLayout());
 		setContentPane(painelPrincipal);
-		painelPrincipal.add(new JScrollPane(tabelaPanel = new TabelaPanel()), BorderLayout.CENTER);
-		painelPrincipal.add(new PainelControle(), BorderLayout.SOUTH);
-		painelPrincipal.setPreferredSize(new Dimension(450, 200));
+		painelPrincipal.add(new JScrollPane(TabelaPanel.getInstance()), BorderLayout.CENTER);
+		painelPrincipal.add(PainelNotificacao.getInstance(), BorderLayout.SOUTH);
+		painelPrincipal.setPreferredSize(new Dimension(850, 500));
 	}
 
 	@Override

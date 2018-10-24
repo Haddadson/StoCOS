@@ -5,12 +5,12 @@ import org.simpleframework.http.Response;
 
 public interface ServerListener {
 
-	void onServerStart();
+	void onServerStart(Servidor servidor);
 
-	void onServerStop();
+	void onServerStop(Servidor servidor);
 
 	void onServerRequest(Request request);
-	
+
 	void onServerResponse(Response response, String data);
 
 }
