@@ -60,6 +60,10 @@ public class TabelaPanel extends JTable implements ServerListener {
 		setShowGrid(true);
 	}
 
+	public boolean isVazio() {
+		return model.getRowCount() == 0;
+	}
+
 	private void configurarColunas() {
 		getColumnModel().getColumn(0).setMinWidth(150);
 		getColumnModel().getColumn(0).setMaxWidth(150);

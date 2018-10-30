@@ -8,7 +8,6 @@ import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -36,7 +35,7 @@ public class Janela extends JFrame implements WindowListener {
 		setAlwaysOnTop(true);
 		addWindowListener(this);
 	}
-	
+
 	private void initToolBar() {
 		getContentPane().add(ToolBar.getInstance(), BorderLayout.WEST);
 	}

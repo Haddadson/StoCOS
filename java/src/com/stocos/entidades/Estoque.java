@@ -19,7 +19,7 @@ public class Estoque implements JsonFormatter {
 
 	private List<Setor> setores;
 
-	private Estoque() {
+	private Estoque() {		
 		setores = new ArrayList<Setor>();
 	}
 
