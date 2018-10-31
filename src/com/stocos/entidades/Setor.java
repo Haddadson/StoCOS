@@ -127,6 +127,15 @@ public class Setor implements JsonFormatter {
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Setor) {
+			Setor s = (Setor) obj;
+			return s.getRedeCosmeticos().getNome().equals(getRedeCosmeticos().getNome());
+		}
+		return false;
+	}
+
+	@Override
 	public JSONObject toJson() {
 		JSONObject obj = new JSONObject();
 		obj.put("id", getId());

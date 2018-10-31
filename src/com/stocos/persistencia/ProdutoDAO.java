@@ -13,7 +13,7 @@ import com.stocos.entidades.Produto;
 public class ProdutoDAO implements DAO<Produto, String> {
 
 	@Override
-	public void add(Produto p) {
+	public void add(Produto p) {		
 		try (DataOutputStream saida = new DataOutputStream(new FileOutputStream("data/produto.dat", true))) {
 			saida.writeUTF(p.getNome());
 			saida.writeUTF(p.getCategoria());

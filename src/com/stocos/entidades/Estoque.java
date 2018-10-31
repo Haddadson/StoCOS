@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import com.stocos.json.JsonFormatter;
 
 public class Estoque implements JsonFormatter {
-
 	private static Estoque INSTANCE;
 
 	public static Estoque getInstance() {
@@ -19,7 +18,7 @@ public class Estoque implements JsonFormatter {
 
 	private List<Setor> setores;
 
-	private Estoque() {		
+	private Estoque() {
 		setores = new ArrayList<Setor>();
 	}
 
