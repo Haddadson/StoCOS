@@ -85,10 +85,10 @@ public class ToolBar extends JToolBar implements ActionListener {
 				int novaPorta = Integer.parseInt(JOptionPane.showInputDialog(this, "Insira a nova porta:"));
 				Servidor.getInstance().setPorta(novaPorta);
 				JOptionPane.showMessageDialog(this,
-						"Nova porta configurada.\nAs alteraÁıes far„o efeito quando \no servidor for iniciado novamente.",
+						"Nova porta configurada.\nAs altera√ß√µes far√£o efeito quando \no servidor for iniciado novamente.",
 						"Certo", JOptionPane.INFORMATION_MESSAGE);
 			} catch (NumberFormatException ex) {
-				JOptionPane.showMessageDialog(this, "Entrada inv·lida: Insira apenas numeros!", "Erro",
+				JOptionPane.showMessageDialog(this, "Entrada inv√°lida: Insira apenas numeros!", "Erro",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}

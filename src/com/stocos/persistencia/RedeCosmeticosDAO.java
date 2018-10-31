@@ -27,7 +27,7 @@ public class RedeCosmeticosDAO implements DAO<RedeCosmeticos, String> {
 		} catch (EOFException e) {
 
 		} catch (Exception e) {
-			System.out.println("ERRO ao ler o Produto do disco rígido!");
+			System.out.println("ERRO ao ler o Produto do disco rÃ­gido!");
 			e.printStackTrace();
 		}
 		return null;
@@ -83,7 +83,7 @@ public class RedeCosmeticosDAO implements DAO<RedeCosmeticos, String> {
 		} catch (EOFException e) {
 
 		} catch (Exception e) {
-			System.out.println("ERRO ao obter lista de Redes de Cosmeticos do disco rígido!");
+			System.out.println("ERRO ao obter lista de Redes de Cosmeticos do disco rÃ­gido!");
 			e.printStackTrace();
 		}
 		return redes;

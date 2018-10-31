@@ -53,7 +53,7 @@ public class PainelNotificacao extends JPanel implements ServerListener {
 
 		status = new JTextField(30);
 		status.setEditable(false);
-		status.setText("O Servidor est· desligado.");
+		status.setText("O Servidor est√° desligado.");
 		status.setBackground(new Color(60, 60, 60));
 		status.setForeground(Color.WHITE);
 		status.setFont(new Font("Console", Font.BOLD, 15));
@@ -63,13 +63,13 @@ public class PainelNotificacao extends JPanel implements ServerListener {
 	@Override
 	public void onServerStart(Servidor servidor) {
 		status.setBackground(COR_LIGADO);
-		status.setText("O Servidor est· ligado em: " + servidor.getEndereco());
+		status.setText("O Servidor est√° ligado em: " + servidor.getEndereco());
 	}
 
 	@Override
 	public void onServerStop(Servidor servidor) {
 		status.setBackground(COR_DESLIGADO);
-		status.setText("O Servidor est· desligado.");
+		status.setText("O Servidor est√° desligado.");
 	}
 
 	@Override

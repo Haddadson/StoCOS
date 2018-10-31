@@ -39,7 +39,7 @@ public class SetorDAO implements DAO<Setor, String> {
 		} catch (EOFException e) {
 
 		} catch (Exception e) {
-			System.out.println("ERRO ao ler o Produto do disco rígido!");
+			System.out.println("ERRO ao ler o Produto do disco rÃ­gido!");
 			e.printStackTrace();
 		}
 		return null;
@@ -100,7 +100,7 @@ public class SetorDAO implements DAO<Setor, String> {
 		} catch (EOFException e) {
 
 		} catch (Exception e) {
-			System.out.println("ERRO ao obter lista de Produtos do disco rígido!");
+			System.out.println("ERRO ao obter lista de Produtos do disco rÃ­gido!");
 			e.printStackTrace();
 		}
 		return setores;
