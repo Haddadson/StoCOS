@@ -52,7 +52,7 @@ public class ProdutoService implements IServico {
 			String volume = query.get("volume");
 			String quantidade = query.get("quantidade");
 
-			// Não é obrigatório informar a quantidade:
+			// NÃ£o Ã© obrigatÃ³rio informar a quantidade:
 			if (quantidade == null)
 				quantidade = "1";
 

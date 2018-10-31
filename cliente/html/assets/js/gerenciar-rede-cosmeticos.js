@@ -1,6 +1,7 @@
 $(document).ready(() => {
     $('.divinfo').hide();
     buscarRedes();
+    inicialiarBotaoAbrirModalAdicaoProdutos();
 });
 
 // Busca as redes de cosméticos no servidor e atualiza o input dropdown
@@ -29,6 +30,7 @@ function buscarRedes() {
 
 // Atualiza as informações da tabela e de capacidade, de acordo com a rede selecionada
 function atualizarInfos(rede) {
+    $('.nenhumarede').hide();
     $('.divinfo').show();
     atualizarCapacidade(rede);
     atualizarTabela(rede);
@@ -98,6 +100,15 @@ function atualizarTabela(rede) {
 }
 
 // Adiciona Produtos
+function inicialiarBotaoAbrirModalAdicaoProdutos() {
+  $("#botao-modal-adicionar-produtos").click(() => {
+     limparModalAdicionarProdutos();
+    let rede = $('#listaderedes a.active').html();
+    $('#marca').val(rede);
+  });
+}
+
+
 $('#adicionarProdutos').click(() => {
     let nome = $('#nome').val();
     let marca = $('#marca').val();
@@ -251,4 +262,13 @@ function filtrar() {
             }
         }
     }
+}
+
+//Limpar modal Adicionar Produtos
+
+function limparModalAdicionarProdutos(){
+  $("#nome").val("");
+  $("#marca").val("");
+  $("#volume").val("");
+  $("#quantidade").val("");
 }

@@ -179,7 +179,7 @@
                                         </div>
 
                                         <button type="button" data-toggle="modal" data-target="#removerModal" class="btn btn-danger">Remover</button>
-                                        <button type="button" data-toggle="modal" data-target="#adicionarModal" class="btn btn-success">Adicionar</button>
+                                        <button type="button" data-toggle="modal" data-target="#adicionarModal" id="botao-modal-adicionar-produtos" class="btn btn-success">Adicionar</button>
                                         <div class="modal fade" id="adicionarModal" tabindex="-1" role="dialog"
                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
@@ -201,9 +201,9 @@
                                                                         required>
                                                                 </div>
                                                                 <div class="form-group col-sm-4">
-                                                                    <label for="marca" class="col-form-label">Marca:</label>
+                                                                    <label for="marca" class="col-form-label">Rede / Marca:</label>
                                                                     <input type="text" class="form-control" id="marca"
-                                                                        required>
+                                                                        readonly required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-row">
