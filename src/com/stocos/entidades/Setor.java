@@ -120,7 +120,7 @@ public class Setor implements JsonFormatter {
 		if (p != null) {
 			if (p.getQuantidade() - qnt > 0)
 				return p.diminuirQuantidade(qnt);
-			else if (p.getQuantidade() - qnt == 0)
+			else
 				return produtos.remove(p);
 		}
 		return false;
@@ -130,7 +130,7 @@ public class Setor implements JsonFormatter {
 	public boolean equals(Object obj) {
 		if (obj instanceof Setor) {
 			Setor s = (Setor) obj;
-			return s.getRedeCosmeticos().getNome().equals(getRedeCosmeticos().getNome());
+			return s.getRedeCosmeticos().getNome().equalsIgnoreCase(getRedeCosmeticos().getNome());
 		}
 		return false;
 	}

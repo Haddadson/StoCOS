@@ -6,6 +6,7 @@ import org.simpleframework.http.Query;
 import com.stocos.entidades.Estoque;
 import com.stocos.entidades.RedeCosmeticos;
 import com.stocos.entidades.Setor;
+import com.stocos.persistencia.BancoDeDados;
 
 public class RedeCosmeticosService implements IServico {
 
@@ -42,9 +43,12 @@ public class RedeCosmeticosService implements IServico {
 			String capacidade = query.get("capacidade").trim();
 			RedeCosmeticos rede = new RedeCosmeticos(nome, endereco, email, telefone);
 			Setor setor = new Setor(rede, Double.parseDouble(capacidade));
-			if (Estoque.getInstance().adicionarSetor(setor))
+			rede.associarSetor(setor);
+			if (Estoque.getInstance().adicionarSetor(setor)) {
+				BancoDeDados.redeDAO.add(rede);
+				BancoDeDados.setorDAO.add(setor);
 				return "{status: OK}";
-			else
+			} else
 				return "{status: DUPLICADO}";
 		} catch (Exception e) {
 			return "{status: ERRO}";

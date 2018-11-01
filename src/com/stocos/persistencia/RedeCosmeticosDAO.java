@@ -15,7 +15,7 @@ public class RedeCosmeticosDAO implements DAO<RedeCosmeticos, String> {
 	@Override
 	public RedeCosmeticos get(String chave) {
 		String strNome = null;
-		try (DataInputStream entrada = new DataInputStream(new FileInputStream("data/redecosmeticos.dat"))) {
+		try (DataInputStream entrada = new DataInputStream(new FileInputStream(BancoDeDados.CAMINHO_REDECOSMETICOS))) {
 			while ((strNome = entrada.readUTF()) != null) {
 				String email = entrada.readUTF();
 				String endereco = entrada.readUTF();
@@ -27,7 +27,7 @@ public class RedeCosmeticosDAO implements DAO<RedeCosmeticos, String> {
 		} catch (EOFException e) {
 
 		} catch (Exception e) {
-			System.out.println("ERRO ao ler o Produto do disco rígido!");
+			System.out.println("ERRO ao ler a Rede de Cosmeticos do disco rigido!");
 			e.printStackTrace();
 		}
 		return null;
@@ -35,12 +35,16 @@ public class RedeCosmeticosDAO implements DAO<RedeCosmeticos, String> {
 
 	@Override
 	public void add(RedeCosmeticos r) {
-		try (DataOutputStream saida = new DataOutputStream(new FileOutputStream("data/redecosmeticos.dat", true))) {
+		try (DataOutputStream saida = new DataOutputStream(
+				new FileOutputStream(BancoDeDados.CAMINHO_REDECOSMETICOS, true))) {
 			saida.writeUTF(r.getNome());
 			saida.writeUTF(r.getEmail());
 			saida.writeUTF(r.getEndereco());
 			saida.writeUTF(r.getTelefone());
-			saida.writeInt(r.getSetor().getId());
+			if (r.getSetor() != null)
+				saida.writeInt(r.getSetor().getId());
+			else
+				saida.writeInt(-1);
 			saida.flush();
 		} catch (Exception e) {
 			System.out.println("ERRO ao gravar a Rede de Cosmeticos no disco!");
@@ -72,7 +76,7 @@ public class RedeCosmeticosDAO implements DAO<RedeCosmeticos, String> {
 	public List<RedeCosmeticos> getAll() {
 		List<RedeCosmeticos> redes = new ArrayList<RedeCosmeticos>();
 		String strNome;
-		try (DataInputStream entrada = new DataInputStream(new FileInputStream("data/redecosmeticos.dat"))) {
+		try (DataInputStream entrada = new DataInputStream(new FileInputStream(BancoDeDados.CAMINHO_REDECOSMETICOS))) {
 			while ((strNome = entrada.readUTF()) != null) {
 				String email = entrada.readUTF();
 				String endereco = entrada.readUTF();
@@ -83,14 +87,15 @@ public class RedeCosmeticosDAO implements DAO<RedeCosmeticos, String> {
 		} catch (EOFException e) {
 
 		} catch (Exception e) {
-			System.out.println("ERRO ao obter lista de Redes de Cosmeticos do disco rígido!");
+			System.out.println("ERRO ao obter lista de Redes de Cosmeticos do disco rigido!");
 			e.printStackTrace();
 		}
 		return redes;
 	}
 
 	private void saveToFile(List<RedeCosmeticos> redes) {
-		try (DataOutputStream saida = new DataOutputStream(new FileOutputStream("data/redecosmeticos.dat", false))) {
+		try (DataOutputStream saida = new DataOutputStream(
+				new FileOutputStream(BancoDeDados.CAMINHO_REDECOSMETICOS, false))) {
 			for (RedeCosmeticos r : redes) {
 				saida.writeUTF(r.getNome());
 				saida.writeUTF(r.getEmail());
@@ -100,7 +105,7 @@ public class RedeCosmeticosDAO implements DAO<RedeCosmeticos, String> {
 				saida.flush();
 			}
 		} catch (Exception e) {
-			System.out.println("ERRO ao gravar o Bens duraveis no disco!");
+			System.out.println("ERRO ao gravar a lista no disco!");
 			e.printStackTrace();
 		}
 	}

@@ -40,7 +40,7 @@ public class Estoque implements JsonFormatter {
 
 	public boolean adicionarSetor(Setor setor) {
 		for (Setor s : setores)
-			if (s.getRedeCosmeticos().getNome().equalsIgnoreCase(setor.getRedeCosmeticos().getNome()))
+			if (s.equals(setor))
 				return false;
 
 		return setores.add(setor);

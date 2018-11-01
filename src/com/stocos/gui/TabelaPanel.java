@@ -77,7 +77,7 @@ public class TabelaPanel extends JTable implements ServerListener {
 				lbl.setBorder(BorderFactory.createEmptyBorder(3, 10, 3, 3));
 				lbl.setFont(new Font("Console", Font.BOLD, 15));
 
-				if (obj.equals("REQUISIÇÃO")) {
+				if (obj.equals("REQUISICAO")) {
 					lbl.setIcon(new ImageIcon("res/icones/down-arrow.png"));
 				} else if (obj.equals("RESPOSTA")) {
 					lbl.setIcon(new ImageIcon("res/icones/up-arrow.png"));
@@ -101,7 +101,7 @@ public class TabelaPanel extends JTable implements ServerListener {
 	@Override
 	public void onServerRequest(Request request) {
 		String query = request.getPath() + "?" + request.getQuery().toString();
-		String[] row = { "REQUISIÇÃO", query };
+		String[] row = { "REQUISICAO", query };
 		model.addRow(row);
 	}
 

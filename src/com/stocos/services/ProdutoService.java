@@ -7,6 +7,7 @@ import org.simpleframework.http.Query;
 import com.stocos.entidades.Estoque;
 import com.stocos.entidades.Produto;
 import com.stocos.entidades.Setor;
+import com.stocos.persistencia.BancoDeDados;
 
 public class ProdutoService implements IServico {
 
@@ -20,6 +21,7 @@ public class ProdutoService implements IServico {
 			Produto p = Estoque.getInstance() //
 					.getSetor(nomeRede) //
 					.getProduto(nomeProduto, marca, categoria);
+
 			if (p != null)
 				return p.toJson().toString();
 			else
@@ -52,14 +54,15 @@ public class ProdutoService implements IServico {
 			String volume = query.get("volume");
 			String quantidade = query.get("quantidade");
 
-			// Não é obrigatório informar a quantidade:
+			// Nao e obrigatorio informar a quantidade:
 			if (quantidade == null)
 				quantidade = "1";
 
 			Produto p = new Produto(nome, marca, categoria, Integer.parseInt(quantidade), Double.parseDouble(volume));
-			if (Estoque.getInstance().getSetor(nomeRede).adicionarProdutos(p))
+			if (Estoque.getInstance().getSetor(nomeRede).adicionarProdutos(p)) {
+				BancoDeDados.produtoDAO.add(p);
 				return new JSONObject().put("status", "ADICIONADO").toString();
-			else
+			} else
 				return new JSONObject().put("status", "ERRO AO ADICIONAR").toString();
 		} catch (Exception e) {
 			return new JSONObject().put("status", "ERRO: " + e.getMessage()).toString();
@@ -70,11 +73,13 @@ public class ProdutoService implements IServico {
 	public String remover(Query query) {
 		try {
 			String nomeRede = query.get("nomerede");
-			String idProduto = query.get("idproduto");
-			String quantidade = query.get("quantidade");
+			int idProduto = query.getInteger("idproduto");
+			int quantidade = query.getInteger("quantidade");
 
-			if (Estoque.getInstance().getSetor(nomeRede).removerProdutos(Integer.parseInt(idProduto),
-					Integer.parseInt(quantidade))) {
+			Produto p = Estoque.getInstance().getSetor(nomeRede).getProdutoById(idProduto);
+			if (p != null) {
+				BancoDeDados.produtoDAO.remover(idProduto, quantidade);
+				Estoque.getInstance().getSetor(nomeRede).removerProdutos(idProduto, quantidade);
 				return new JSONObject().put("status", "REMOVIDO").toString();
 			} else {
 				return new JSONObject().put("status", "ERRO AO REMOVER").toString();

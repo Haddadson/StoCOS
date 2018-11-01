@@ -6,6 +6,7 @@ import org.simpleframework.http.Query;
 
 import com.stocos.entidades.Estoque;
 import com.stocos.entidades.Setor;
+import com.stocos.persistencia.BancoDeDados;
 
 public class SetorService implements IServico {
 
@@ -32,12 +33,12 @@ public class SetorService implements IServico {
 
 	@Override
 	public String add(Query query) {
-		return null;
+		return "";
 	}
 
 	@Override
 	public String remover(Query query) {
-		return null;
+		return "";
 	}
 
 	@Override
@@ -49,13 +50,18 @@ public class SetorService implements IServico {
 				return new JSONObject().put("status", "ERRO: Nova capacidade negativa.").toString();
 
 			Setor setor = Estoque.getInstance().getSetor(nomeRede);
-			double diferenca = setor.getCapacidade() - novaCapacidade;
-			if (diferenca > 0) {
-				setor.reduzir(diferenca);
-				return new JSONObject().put("status", "CAPACIDADE REDUZIDA").toString();
+			if (setor != null) {
+				double diferenca = setor.getCapacidade() - novaCapacidade;
+				if (diferenca > 0) {
+					setor.reduzir(diferenca);
+					BancoDeDados.setorDAO.update(setor);
+					return new JSONObject().put("status", "CAPACIDADE REDUZIDA").toString();
+				} else {
+					setor.expandir(-1.0 * diferenca);
+					return new JSONObject().put("status", "CAPACIDADE EXPANDIDA").toString();
+				}
 			} else {
-				setor.expandir(-1.0 * diferenca);
-				return new JSONObject().put("status", "CAPACIDADE EXPANDIDA").toString();
+				return new JSONObject().put("status", "SETOR INEXISTENTE").toString();
 			}
 		} catch (Exception e) {
 			return new JSONObject().put("status", "ERRO: " + e.getMessage()).toString();

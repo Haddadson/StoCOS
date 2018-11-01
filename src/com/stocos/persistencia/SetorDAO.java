@@ -17,7 +17,7 @@ public class SetorDAO implements DAO<Setor, String> {
 	@Override
 	public Setor get(String nomeRede) {
 		String strNomeRede = null;
-		try (DataInputStream entrada = new DataInputStream(new FileInputStream("data/setor.dat"))) {
+		try (DataInputStream entrada = new DataInputStream(new FileInputStream(BancoDeDados.CAMINHO_SETOR))) {
 			while ((strNomeRede = entrada.readUTF()) != null) {
 				if (nomeRede.equals(strNomeRede)) {
 					RedeCosmeticosDAO redeDAO = new RedeCosmeticosDAO();
@@ -37,9 +37,10 @@ public class SetorDAO implements DAO<Setor, String> {
 				}
 			}
 		} catch (EOFException e) {
-
+			System.out.println("ERRO ao ler o arquivo do disco rigido!" + e.getMessage());
+			e.printStackTrace();
 		} catch (Exception e) {
-			System.out.println("ERRO ao ler o Produto do disco rígido!");
+			System.out.println("ERRO: " + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -47,7 +48,7 @@ public class SetorDAO implements DAO<Setor, String> {
 
 	@Override
 	public void add(Setor s) {
-		try (DataOutputStream saida = new DataOutputStream(new FileOutputStream("data/setor.dat", true))) {
+		try (DataOutputStream saida = new DataOutputStream(new FileOutputStream(BancoDeDados.CAMINHO_SETOR, true))) {
 			saida.writeUTF(s.getRedeCosmeticos().getNome());
 			saida.writeDouble(s.getCapacidade());
 			saida.flush();
@@ -80,34 +81,31 @@ public class SetorDAO implements DAO<Setor, String> {
 	@Override
 	public List<Setor> getAll() {
 		List<Setor> setores = new ArrayList<Setor>();
-		String strNomeRede;
-		try (DataInputStream entrada = new DataInputStream(new FileInputStream("data/setor.dat"))) {
-			while ((strNomeRede = entrada.readUTF()) != null) {
-				RedeCosmeticosDAO redeDAO = new RedeCosmeticosDAO();
-				RedeCosmeticos rede = redeDAO.get(strNomeRede);
+		try (DataInputStream entrada = new DataInputStream(new FileInputStream(BancoDeDados.CAMINHO_SETOR))) {
+			while (entrada.available() > 0) {
+				String strNomeRede = entrada.readUTF();
+				RedeCosmeticos rede = BancoDeDados.redeDAO.get(strNomeRede);
+
 				if (rede == null)
 					throw new Exception("Rede nao encontrada!");
+
 				double capacidade = entrada.readDouble();
 				Setor setor = new Setor(rede, capacidade);
-				ProdutoDAO produtoDAO = new ProdutoDAO();
-				List<Produto> produtos = produtoDAO.getAll();
-				for (Produto p : produtos) {
-					if (p.getMarca().equals(strNomeRede)) {
-						setor.getListaProdutos().add(p);
-					}
-				}
+
+				List<Produto> produtos = BancoDeDados.produtoDAO.getProdutosByRede(strNomeRede);
+				setor.getListaProdutos().addAll(produtos);
+				setores.add(setor);
 			}
 		} catch (EOFException e) {
-
-		} catch (Exception e) {
-			System.out.println("ERRO ao obter lista de Produtos do disco rígido!");
 			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("ERRO ao obter lista de Setores do disco rigido: " + e.getMessage());
 		}
 		return setores;
 	}
 
 	private void saveToFile(List<Setor> setores) {
-		try (DataOutputStream saida = new DataOutputStream(new FileOutputStream("data/setor.dat", false))) {
+		try (DataOutputStream saida = new DataOutputStream(new FileOutputStream(BancoDeDados.CAMINHO_SETOR, false))) {
 			for (Setor s : setores) {
 				add(s);
 			}
