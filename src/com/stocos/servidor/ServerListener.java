@@ -5,12 +5,14 @@ import org.simpleframework.http.Response;
 
 public interface ServerListener {
 
-	void onServerStart(Servidor servidor);
+	void onServerStart();
 
-	void onServerStop(Servidor servidor);
+	void onServerStop();
 
-	void onServerRequest(Request request);
+	void onServerRequest(Request req);
 
-	void onServerResponse(Response response, String data);
+	void onServerResponse(Request req, Response res);
+
+	void onPortChange(int novaPorta);
 
 }

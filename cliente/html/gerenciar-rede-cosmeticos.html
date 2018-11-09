@@ -16,24 +16,26 @@
 
 <body>
     <nav class="navbar navbar-expand-sm navbar-light bg-light navbar-shadow">
-        <a class="navbar-brand" href="#">
-            <img src="assets/imgs/logo.png" height="40px" alt="logo">
-        </a>
-        <button class="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
-            aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavId">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="cadastrar-rede-cosmeticos.html"><img src="assets/imgs/cadastro.svg"
-                            height="20px"> Cadastrar</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="gerenciar-rede-cosmeticos.html"><img src="assets/imgs/settings.svg"
-                            height="20px"> Gerenciar</a>
-                </li>
-            </ul>
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="assets/imgs/logo.png" height="40px" alt="logo">
+            </a>
+            <button class="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
+                aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastrar-rede-cosmeticos.html"><img src="assets/imgs/cadastro.svg"
+                                height="20px"> Cadastrar</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="gerenciar-rede-cosmeticos.html"><img src="assets/imgs/settings.svg"
+                                height="20px"> Gerenciar</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 
@@ -179,7 +181,8 @@
                                         </div>
 
                                         <button type="button" data-toggle="modal" data-target="#removerModal" class="btn btn-danger">Remover</button>
-                                        <button type="button" data-toggle="modal" data-target="#adicionarModal" id="botao-modal-adicionar-produtos" class="btn btn-success">Adicionar</button>
+                                        <button type="button" data-toggle="modal" data-target="#adicionarModal" id="botao-modal-adicionar-produtos"
+                                            class="btn btn-success">Adicionar</button>
                                         <div class="modal fade" id="adicionarModal" tabindex="-1" role="dialog"
                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
@@ -201,7 +204,8 @@
                                                                         required>
                                                                 </div>
                                                                 <div class="form-group col-sm-4">
-                                                                    <label for="marca" class="col-form-label">Rede / Marca:</label>
+                                                                    <label for="marca" class="col-form-label">Rede /
+                                                                        Marca:</label>
                                                                     <input type="text" class="form-control" id="marca"
                                                                         readonly required>
                                                                 </div>
@@ -213,7 +217,8 @@
                                                                     <select class="form-control" id="categoria">
                                                                         <option value="MAQUIAGEM">Maquiagem</option>
                                                                         <option value="CABELO">Cabelo</option>
-                                                                        <option value="CUIDADOS COM A PELE">Cuidados Com a Pele</option>
+                                                                        <option value="CUIDADOS COM A PELE">Cuidados
+                                                                            Com a Pele</option>
                                                                         <option value="OUTROS">Outros...</option>
                                                                     </select required>
                                                                 </div>
