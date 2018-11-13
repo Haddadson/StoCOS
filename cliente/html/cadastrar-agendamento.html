@@ -1,7 +1,6 @@
-<!doctype html>
-<html lang="en">
-
-<head>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
     <title>Agendar entrega</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -35,7 +34,7 @@
                                 height="20px"> Gerenciar</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="cadastrar-agendamento.html"><img src="assets/imgs/cadastro.svg"
+                        <a class="nav-link" href="cadastrar-agendamento.html"><img src="assets/imgs/clock.svg"
                                 height="20px"> Agendar entrega</a>
                     </li>
                 </ul>
@@ -48,7 +47,7 @@
         <div class="row">
             <div class="col-md">
                 <div class="d-flex flex-row">
-                    <img src="assets/imgs/cadastro.svg" height="40px" style="margin-right: 10px;">
+                    <img src="assets/imgs/clock.svg" height="40px" style="margin-right: 10px;">
                     <h2>Agendar entrega de produtos</h2>
                 </div>
                 <hr>
@@ -57,8 +56,8 @@
                         <div class="form-row">
                           <div class="form-group col-md-12">
                               <label for="inputAddress">Produto: </label>
-                              <input type="text" class="form-control" id="endereco" placeholder="Selecione um produto cadastrado"
-                                  required readonly>
+                              <input type="text" class="form-control" id="produto" placeholder="Selecione um produto cadastrado"
+                                  data-id-produto="" required readonly>
                           </div>
 
                         </div>
@@ -86,13 +85,13 @@
                               </div>
                               <div id="container-lista">
                                   <div class="divlista">
-                                      <div id="filtrarDiv" class="input-group">
+                                      <div id="filtrarProdutosDiv" class="input-group">
                                           <div class="input-group-prepend">
                                               <span class="input-group-text" id="basic-addon1">
                                                   <img src="assets/imgs/search.svg" width="25px">
                                               </span>
                                           </div>
-                                          <input id="filtrar" type="text" class="form-control" placeholder="Filtrar">
+                                          <input id="filtrarProdutos" type="text" class="form-control" placeholder="Filtrar">
                                       </div>
                                       <div id="listaProdutos" class="list-group"></div>
                                   </div>
@@ -108,17 +107,17 @@
             </div>
             <div class="col-md">
                 <div>
-                    <h4><img src="assets/imgs/enterprise.svg" width="25px">Agendamentos cadastrados: </h4>
+                    <h4><img src="assets/imgs/clock-registered.svg" width="25px">Agendamentos cadastrados: </h4>
                 </div>
                 <div id="container-lista">
                     <div class="divlista">
-                        <div id="filtrarDiv" class="input-group">
+                        <div id="filtrarAgendamentosDiv" class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
                                     <img src="assets/imgs/search.svg" width="25px">
                                 </span>
                             </div>
-                            <input id="filtrar" type="text" class="form-control" placeholder="Filtrar">
+                            <input id="filtrarAgendamentos" type="text" class="form-control" placeholder="Filtrar">
                         </div>
                         <div id="listaAgendamentos" class="list-group"></div>
                     </div>
@@ -127,13 +126,11 @@
         </div>
     </div>
 
-
     <footer class="page-footer font-small blue pt-4">
         <div class="footer-copyright text-center py-3">© 2018 Copyright:
             <a href="#"> stocos.com.br</a>
         </div>
     </footer>
-
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
@@ -141,7 +138,8 @@
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
         crossorigin="anonymous"></script>
-
+    <script type="text/javascript" src="assets/js/main.js"></script>
+    <script type="text/javascript" src="assets/js/cadastrar-agendamento.js"></script>
 
 </body>
 
