@@ -1,17 +1,22 @@
 package com.stocos.servico;
 
+import java.util.Map.Entry;
+
+import org.json.JSONObject;
+import org.simpleframework.http.Query;
+
 public interface Servico<K, O> {
 
-	String getAll();
+	String getAll() throws Exception;
 
-	String getById(String id);
+	String getById(Query query) throws Exception;
 
-	String getByAtributo(String atr, String valor);
+	String delete(Query query) throws Exception;
 
-	String add(O obj);
-	
-	String update(K k, O obj);
-	
-	String delete(K k);
+	String getByAtributo(Entry<String, String> entry) throws Exception;
+
+	String add(JSONObject json) throws Exception;
+
+	String update(JSONObject json) throws Exception;
 
 }

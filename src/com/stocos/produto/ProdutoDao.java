@@ -22,7 +22,6 @@ public class ProdutoDao extends DefaultDaoImpl<Produto> {
 				return super.put(atr, val == null ? new String("") : val);
 			}
 		};
-		json.put("rede", obj.getRedeCosmeticos());
 		json.put("nome", obj.getNome());
 		json.put("marca", obj.getMarca());
 		json.put("categoria", obj.getCategoria());
@@ -33,12 +32,10 @@ public class ProdutoDao extends DefaultDaoImpl<Produto> {
 	@Override
 	public Produto fromJson(JSONObject json) {
 		String nome = json.getString("nome");
-		String rede = json.getString("rede");
 		String marca = json.getString("marca");
 		String categoria = json.getString("categoria");
 		double volume = json.getDouble("volume");
-
-		Produto p = new Produto(rede, nome, volume);
+		Produto p = new Produto(nome, volume);
 		p.setMarca(marca);
 		p.setCategoria(categoria);
 		return p;

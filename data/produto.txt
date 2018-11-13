@@ -1,0 +1,1 @@
+{"volume":20.4,"marca":"Loreal","categoria":"Shampoo","nome":"Loreal Kids","id":"f1ad9477-f916-4a22-977c-c21686916f02"}

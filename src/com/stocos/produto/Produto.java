@@ -2,20 +2,15 @@ package com.stocos.produto;
 
 public class Produto {
 
-	private String rede, nome, marca, categoria;
+	private String nome, marca, categoria;
 	private double volume;
 
-	public Produto(String rede, String nome, double volume) {
-		setRedeCosmeticos(rede);
+	public Produto(String nome, double volume) {
 		setNome(nome);
 		setVolume(volume);
 	}
 
 	//
-
-	public void setRedeCosmeticos(String rede) {
-		this.rede = rede;
-	}
 
 	public void setNome(String nome) {
 		this.nome = nome;
@@ -34,10 +29,6 @@ public class Produto {
 	}
 
 	//
-
-	public String getRedeCosmeticos() {
-		return rede;
-	}
 
 	public String getNome() {
 		return nome;

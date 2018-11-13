@@ -12,7 +12,6 @@ public class RedeCosmeticosDao extends DefaultDaoImpl<RedeCosmeticos> {
 
 	public RedeCosmeticosDao() {
 		setUnique("nome");
-		setUnique("email");
 	}
 
 	@Override

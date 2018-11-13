@@ -11,10 +11,10 @@ public interface Dao<K, O> {
 
 	Entry<K, O> getById(K id);
 
-	void create(O obj);
+	boolean create(O obj);
 
-	void update(K id, O obj);
+	boolean update(K id, O obj);
 
-	void delete(K id);
+	boolean delete(K id);
 
 }
