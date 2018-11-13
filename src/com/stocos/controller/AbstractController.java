@@ -1,12 +1,12 @@
 package com.stocos.controller;
 
 import java.io.PrintStream;
-import java.util.function.BiFunction;
 
+import org.json.JSONObject;
 import org.simpleframework.http.Request;
 import org.simpleframework.http.Response;
 
-public abstract class AbstractController {
+public abstract class AbstractController implements IController {
 
 	private boolean respondido = false;
 	private Request req;
@@ -25,29 +25,27 @@ public abstract class AbstractController {
 		return res;
 	}
 
-	public abstract void handle() throws Exception;
-
-	public void get(String path, BiFunction<Request, Response, String> f) throws Exception {
+	public void get(String path, Rota f) {
 		executeFunction("GET", path, f);
 	}
 
-	public void post(String path, BiFunction<Request, Response, String> f) throws Exception {
+	public void post(String path, Rota f) {
 		executeFunction("POST", path, f);
 	}
 
-	public void delete(String path, BiFunction<Request, Response, String> f) throws Exception {
+	public void delete(String path, Rota f) {
 		executeFunction("DELETE", path, f);
 	}
 
-	public void put(String path, BiFunction<Request, Response, String> f) throws Exception {
+	public void put(String path, Rota f) {
 		executeFunction("PUT", path, f);
 	}
 
-	public void any(String path, BiFunction<Request, Response, String> f) throws Exception {
+	public void any(String path, Rota f) {
 		executeFunction("ANY", path, f);
 	}
 
-	public void executeFunction(String method, String path, BiFunction<Request, Response, String> f) throws Exception {
+	public void executeFunction(String method, String path, Rota r) {
 		if (respondido && !method.equalsIgnoreCase("ANY"))
 			return;
 		if (!req.getMethod().equalsIgnoreCase(method) && !method.equalsIgnoreCase("ANY"))
@@ -55,19 +53,19 @@ public abstract class AbstractController {
 		if (!path.equalsIgnoreCase(req.getPath().toString()))
 			return;
 
-		PrintStream body = new PrintStream(res.getPrintStream());
-		body.println(f.apply(req, res));
-		body.close();
-		respondido = true;
+		try {
+			PrintStream body = new PrintStream(res.getPrintStream());
+			String conteudo = "";
+			try {
+				conteudo = r.execute(req, res);
+			} catch (Exception e) {
+				conteudo = new JSONObject().put("Erro", e.getMessage()).toString();
+			}
+			body.println(conteudo);
+			body.close();
+			respondido = true;
+		} catch (Exception e) {
+			System.err.println("Erro ao obter Stream da Response: " + e.getMessage());
+		}
 	}
-
-	public void notFound(BiFunction<Request, Response, String> f) throws Exception {
-		if (respondido)
-			return;
-		PrintStream body = new PrintStream(res.getPrintStream());
-		body.println(f.apply(req, res));
-		body.close();
-		respondido = true;
-	}
-
 }

@@ -21,7 +21,7 @@ import org.json.JSONObject;
 
 public abstract class DefaultDaoImpl<O> implements Dao<UUID, O> {
 
-	public static final String CAMPO_UUID = "uuid";
+	public static final String CAMPO_UUID = "id";
 
 	public abstract JSONObject toJson(O obj);
 
@@ -104,17 +104,19 @@ public abstract class DefaultDaoImpl<O> implements Dao<UUID, O> {
 	}
 
 	@Override
-	public synchronized void create(O novoObj) {
+	public synchronized boolean create(O novoObj) {
 		Map<UUID, O> map = getAll();
 		if (contarConflitos(map, novoObj) == 0) {
 			UUID uuid = UUID.randomUUID();
 			JSONObject json = toJson(novoObj).put(CAMPO_UUID, uuid);
 			writeLines(Arrays.asList(json.toString()), true);
+			return true;
 		}
+		return false;
 	}
 
 	@Override
-	public synchronized void update(UUID id, O novoObj) {
+	public synchronized boolean update(UUID id, O novoObj) {
 		Map<UUID, O> map = getAll();
 		if (contarConflitos(map, novoObj) == 0 && map.containsKey(id)) {
 			map.put(id, novoObj);
@@ -123,11 +125,13 @@ public abstract class DefaultDaoImpl<O> implements Dao<UUID, O> {
 					.map(e -> entryToJson(e)) //
 					.map(json -> json.toString()) //
 					.collect(Collectors.toList()), false);
+			return true;
 		}
+		return false;
 	}
 
 	@Override
-	public synchronized void delete(UUID id) {
+	public synchronized boolean delete(UUID id) {
 		Map<UUID, O> map = getAll();
 		if (map.containsKey(id)) {
 			map.remove(id);
@@ -136,7 +140,9 @@ public abstract class DefaultDaoImpl<O> implements Dao<UUID, O> {
 					.map(e -> entryToJson(e)) //
 					.map(json -> json.toString()) //
 					.collect(Collectors.toList()), false);
+			return true;
 		}
+		return false;
 	}
 
 	public JSONObject entryToJson(Entry<UUID, O> e) {

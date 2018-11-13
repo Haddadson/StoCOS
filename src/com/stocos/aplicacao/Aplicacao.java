@@ -3,9 +3,7 @@ package com.stocos.aplicacao;
 import com.stocos.servidor.Server;
 
 public class Aplicacao {
-
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		Server.getInstance().start();
-		System.in.read();
 	}
 }
