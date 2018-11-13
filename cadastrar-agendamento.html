@@ -1,17 +1,17 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <title>Cadastrar</title>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <title>Agendar entrega</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/logo.png"/>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
         crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/cadastrar-rede-cosmeticos.css">
+    <link rel="stylesheet" href="assets/css/cadastrar-agendamento.css">
 </head>
 
 <body>
@@ -26,7 +26,7 @@
             </button>
             <div class="collapse navbar-collapse" id="collapsibleNavId">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="cadastrar-rede-cosmeticos.html"><img src="assets/imgs/cadastro.svg"
                                 height="20px"> Cadastrar</a>
                     </li>
@@ -34,8 +34,8 @@
                         <a class="nav-link" href="gerenciar-rede-cosmeticos.html"><img src="assets/imgs/settings.svg"
                                 height="20px"> Gerenciar</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cadastrar-agendamento.html"><img src="assets/imgs/cadastro.svg"
+                    <li class="nav-item active">
+                        <a class="nav-link" href="cadastrar-agendamento.html"><img src="assets/imgs/clock.svg"
                                 height="20px"> Agendar entrega</a>
                     </li>
                 </ul>
@@ -48,80 +48,90 @@
         <div class="row">
             <div class="col-md">
                 <div class="d-flex flex-row">
-                    <img src="assets/imgs/cadastro.svg" height="40px" style="margin-right: 10px;">
-                    <h2>Cadastrar</h2>
+                    <img src="assets/imgs/clock.svg" height="40px" style="margin-right: 10px;">
+                    <h2>Agendar entrega de produtos</h2>
                 </div>
                 <hr>
                 <div>
                     <form>
                         <div class="form-row">
-                            <div class="form-group col-md-8">
-                                <label for="inputEmail4">Nome da nova Rede de Cosméticos: </label>
-                                <input type="text" class="form-control" minlength="2" id="nome" placeholder="Insira o Nome da Rede"
-                                    required>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="inputPassword4">Capacidade do Setor: </label>
-                                <input type="number" min="0" max="99999.99" step=".01" class="form-control" id="capacidade"
-                                    placeholder="0 - 99999.99" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputAddress">Endereço: </label>
-                            <input type="text" class="form-control" id="endereco" placeholder="Insira o Endereço da Rede"
-                                required>
+                          <div class="form-group col-md-12">
+                              <label for="inputAddress">Produto: </label>
+                              <input type="text" class="form-control" id="produto" placeholder="Selecione um produto cadastrado"
+                                  data-id-produto="" required readonly>
+                          </div>
+
                         </div>
                         <div class="form-row">
-
-                            <div class="form-group col-md-7">
-                                <label for="inputAddress">Email: </label>
-                                <input type="email" class="form-control" id="email" placeholder="Insira o Email da Rede"
-                                    required>
-                            </div>
-                            <div class="form-group col-md-5">
-                                <label for="inputAddress2">Telefone: </label>
-                                <input type="tel" class="form-control" maxlength="14" id="telefone" placeholder="(12) 3456-7890"
-                                    required />
-
-                            </div>
+                          <div class="form-group col-md-4">
+                              <label for="inputPassword4">Quantidade: </label>
+                              <input type="number" min="1" max="500" step="1" class="form-control" id="quantidade"
+                                  placeholder="1 - 500" required>
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="inputEmail4">Data da entrega: </label>
+                              <input type="date" class="form-control" id="data-agendamento" placeholder="dd/mm/yyyy"
+                                  required>
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="inputEmail4">Data de vencimento: </label>
+                              <input type="date" class="form-control" id="data-vencimento" placeholder="dd/mm/yyyy"
+                                  required>
+                          </div>
                         </div>
-                        <small id="emailHelp" class="form-text text-muted">Verifique se a rede já não está cadastrada
-                            no sistema.</small>
+                        <div class="form-row">
+                          <div class="col-md">
+                              <div>
+                                  <h4><img src="assets/imgs/cosmetics.svg" width="25px">Produtos cadastrados: </h4>
+                              </div>
+                              <div id="container-lista">
+                                  <div class="divlista">
+                                      <div id="filtrarProdutosDiv" class="input-group">
+                                          <div class="input-group-prepend">
+                                              <span class="input-group-text" id="basic-addon1">
+                                                  <img src="assets/imgs/search.svg" width="25px">
+                                              </span>
+                                          </div>
+                                          <input id="filtrarProdutos" type="text" class="form-control" placeholder="Filtrar">
+                                      </div>
+                                      <div id="listaProdutos" class="list-group"></div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
                         <div id="status-cadastro"></div>
                         <div class="d-flex flex-row-reverse">
-                            <button id="cadastrar" class="btn btn-lg btn-success">Cadastrar</button>
+                            <button id="cadastrar-agendamento" class="btn btn-lg btn-success">Cadastrar</button>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="col-md">
                 <div>
-                    <h4><img src="assets/imgs/enterprise.svg" width="25px"> Redes de Cosméticos Cadastradas: </h4>
+                    <h4><img src="assets/imgs/clock-registered.svg" width="25px">Agendamentos cadastrados: </h4>
                 </div>
                 <div id="container-lista">
                     <div class="divlista">
-                        <div id="filtrarDiv" class="input-group">
+                        <div id="filtrarAgendamentosDiv" class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">
                                     <img src="assets/imgs/search.svg" width="25px">
                                 </span>
                             </div>
-                            <input id="filtrar" type="text" class="form-control" placeholder="Filtrar">
+                            <input id="filtrarAgendamentos" type="text" class="form-control" placeholder="Filtrar">
                         </div>
-                        <div id="listaRedes" class="list-group"></div>
+                        <div id="listaAgendamentos" class="list-group"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-
     <footer class="page-footer font-small blue pt-4">
         <div class="footer-copyright text-center py-3">© 2018 Copyright:
             <a href="#"> stocos.com.br</a>
         </div>
     </footer>
-
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
@@ -130,7 +140,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
         crossorigin="anonymous"></script>
     <script type="text/javascript" src="assets/js/main.js"></script>
-    <script type="text/javascript" src="assets/js/cadastrar-rede-cosmeticos.js"></script>
+    <script type="text/javascript" src="assets/js/cadastrar-agendamento.js"></script>
+
 </body>
 
 </html>

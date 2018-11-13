@@ -1,4 +1,5 @@
 $(document).ready(() => {
+    mascaraTelefone();
     $('#filtrarDiv').hide();
     montarLista();
 
@@ -62,4 +63,21 @@ function atualizarStatus(id, cor, msg) {
     $(id).html(
         '<p class="text-' + cor + '">' + msg + '</p>'
     );
+}
+
+function mascaraTelefone(){
+  $('#telefone').inputmask("(99)99999-9999", { autoclear: true});
+
+  $("#telefone").on("blur", function() {
+    var last = $(this).val().substr( $(this).val().indexOf("-") + 1 );
+
+    if( last.length == 3 ) {
+        var move = $(this).val().substr( $(this).val().indexOf("-") - 1, 1 );
+        var lastfour = move + last;
+
+        var first = $(this).val().substr( 0, 9 );
+
+        $(this).val( first + '-' + lastfour );
+    }
+});
 }

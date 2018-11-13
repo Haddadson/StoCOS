@@ -1,2 +1,0 @@
-{"id-rede":"ac0f6454-3a38-4cc9-9033-c1f23a68f2e2","data-agendamento":"2018-11-12","id-produto":"f1ad9477-f916-4a22-977c-c21686916f02","data-validade":"2022-05-16T14:10","id":"cfe1e6fc-6144-4aa7-b932-19ec981382e8","quantidade":100,"data-entrega":"2018-11-12","status":1}
-{"id-rede":"ac0f6454-3a38-4cc9-9033-c1f23a68f2e2","data-agendamento":"2018-11-12","id-produto":"f1ad9477-f916-4a22-977c-c21686916f02","data-validade":"2022-05-16T14:10","id":"a9d00b10-9f82-4e8e-b97a-d46fb27b8668","quantidade":100,"data-entrega":"2018-11-12","status":1}
