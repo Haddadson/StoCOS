@@ -9,7 +9,7 @@ $(document).ready(() => {
         let quantidade = $('#quantidade').val();
         let dataAgendamento = $('#data-agendamento').val();
         let dataVencimento = $('#data-vencimento').val();
-        let idRede = "47a0c01c-fc82-44c5-90b2-60de84b3f14d"; //Lojas Rede //TODO: Obter Rede logada
+        let idRede = "883c657a-8ce1-4ef1-bf47-1d9481afbd5e"; //Lojas Rede //TODO: Obter Rede logada
 
         dataVencimento = formataData(dataVencimento);
         if(!nuloOuVazio(produto) || !nuloOuVazio(quantidade) || !nuloOuVazio(dataAgendamento) || !nuloOuVazio(dataVencimento)){
