@@ -2,7 +2,18 @@ $(document).ready(() => {
     $('.divinfo').hide();
     buscarRedes();
     inicialiarBotaoAbrirModalAdicaoProdutos();
+    // Filtra os itens da tabela
+    $("#filtrarRedes").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#listaderedes a").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
 });
+
+function obterRedePorNome(){
+  
+}
 
 // Busca as redes de cosméticos no servidor e atualiza o input dropdown
 function buscarRedes() {
@@ -33,7 +44,7 @@ function atualizarInfos(rede) {
     $('.nenhumarede').hide();
     $('.divinfo').show();
     atualizarCapacidade($(rede).data('id-rede'));
-    atualizarTabela($(rede).html());
+    atualizarTabela($(rede).html(), $(rede).data('id-rede'));
 }
 
 // Atualizar capacidade, volumeDisponivel e volumeOcupado
@@ -160,7 +171,7 @@ function atualizarGraficoCategoria(rede) {
     });
 }
 
-function atualizarTabela(rede) {
+function atualizarTabela(rede, idRede) {
     $('#corpo-tabela').empty();
     var produtos = [];
     $.get('http://localhost:4567/produto/getAll', (data) => {
@@ -177,27 +188,27 @@ function atualizarTabela(rede) {
                     var categoria = produto['categoria'];
                     var quantidade = produto['quantidade'];
                     var volume = produto['volume'];
-
-                    $('#corpo-tabela').append(
-                        '<tr><th scope="row">' + id +
-                        '</th><td>' + nome +
-                        '</td><td>' + marca +
-                        '</td><td>' + categoria +
-                        '</td><td>' + volume +
-                        '</td><td>' + quantidade +
-                        '</td></tr>');
-                }
+                    $.get('http://localhost:4567/lote/getByAtributo?idrede=' + idRede, (data) => {
+                      console.log(idRede);
+                        console.log(data);
+                        $('#corpo-tabela').append(
+                            '<tr><th scope="row">' + id +
+                            '</th><td>' + nome +
+                            '</td><td>' + marca +
+                            '</td><td>' + categoria +
+                            '</td><td>' + volume +
+                            '</td><td>' + quantidade +
+                            '</td></tr>');
+                    });
+               }
             } else {
                 $('#corpo-tabela').append('<tr><th scope="row"></th><td>Não há produtos cadastrados</td><td></td><td></td><td></td><td></td></tr>');
             }
         }
-    }).done(function (data) {
-
-    }).fail(function () {
-
-    }).always(function () {
-
-    });
+    })
+    .done(function (data) {})
+    .fail(function () {})
+    .always(function () {});
 }
 
 // Adiciona Produtos

@@ -16,3 +16,17 @@
     width:100% !important;
     height:100px !important;
 }
+
+#listaderedes {
+  height: 400px;
+  overflow-y: scroll;
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+th, td {
+  word-wrap: break-word;
+}
