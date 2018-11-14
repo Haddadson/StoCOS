@@ -24,7 +24,7 @@ $(document).on('click', '#confirmarRecebimento', function (e) {
                 type: 'POST',
                 url: 'http://localhost:4567/lote/update',
                 data: JSON.stringify(lote),
-                success: function (data) { 
+                success: function (data) {
                     alert("Recebimento confirmado com sucesso.");
                     location.reload();
                 },
@@ -33,7 +33,7 @@ $(document).on('click', '#confirmarRecebimento', function (e) {
             });
         }
     });
-    
+
 });
 
 $(document).on('click', '#cancelarRecebimento', function (e) {
@@ -48,7 +48,7 @@ $(document).on('click', '#cancelarRecebimento', function (e) {
                 type: 'POST',
                 url: 'http://localhost:4567/lote/update',
                 data: JSON.stringify(lote),
-                success: function (data) { 
+                success: function (data) {
                     alert("Cancelamento realizado com sucesso.");
                     location.reload();
                 },
@@ -57,7 +57,7 @@ $(document).on('click', '#cancelarRecebimento', function (e) {
             });
         }
     });
-    
+
 });
 
 
@@ -82,7 +82,7 @@ $(document).on('click', '.list-group-item', function (e) {
         url: "http://localhost:4567/lote/getById?id=" + id_lote,
         success: function (data) {
             lote = data;
-            $('#dataEntrega').html("<div>Data da Entrega: "+data[0]['data-entrega']+"</div>");
+            $('#dataEntrega').html("<div>Data da Entrega prevista: "+ data[0]['data-agendamento'] +"</div>");
             $('#dataValidade').html("<div>Data de Validade: "+data[0]['data-validade']+"</div>");
             $('#quantidadeProd').html("<div>Quantidade: "+data[0]['quantidade']+"</div>");
             $('#idLote').html('<div id="identificadorLote" data-identificador='+ data[0]['id'] +'>Identificador: '+data[0]['id']+'</div>');
@@ -97,7 +97,7 @@ $(document).on('click', '.list-group-item', function (e) {
 
         }
     });
-    
+
 });
 
 function criarDiv(id_rede, lote) {
