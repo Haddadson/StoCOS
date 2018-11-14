@@ -1,20 +1,24 @@
-$(document).ready(() => {
+﻿$(document).ready(() => {
     mascaraTelefone();
     $('#filtrarDiv').hide();
     montarLista();
 
     // Tenta realizar o cadastro
     $('#cadastrar').click(() => {
-        let nome = $('#nome').val();
-        let capacidade = $('#capacidade').val();
-        let endereco = $('#endereco').val();
-        let email = $('#email').val();
-        let telefone = $('#telefone').val();
-        $.get('http://localhost:4567/redecosmeticos/add?nome=' + nome + '&capacidade=' + capacidade +
-            '&endereco=' + endereco + '&email=' + email + '&telefone=' + telefone, (data) => {
-                console.log('data=' + data);
-                montarLista();
-            });
+        let rede = new Object();
+        rede.nome = $('#nome').val();
+        rede.capacidade = parseInt($('#capacidade').val());
+        rede.endereco = $('#endereco').val();
+        rede.email = $('#email').val();
+        rede.telefone = $('#telefone').val();
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:4567/redecosmeticos/add',
+            data: JSON.stringify(rede),
+            success: function (data) { alert('data: ' + data); },
+            contentType: "text/plain; charset=utf-8",
+            dataType: 'json'
+        });
     });
 
     // Filtra os itens da tabela
@@ -65,19 +69,19 @@ function atualizarStatus(id, cor, msg) {
     );
 }
 
-function mascaraTelefone(){
-  $('#telefone').inputmask("(99)99999-9999", { autoclear: true});
+function mascaraTelefone() {
+    $('#telefone').inputmask("(99)99999-9999", { autoclear: true });
 
-  $("#telefone").on("blur", function() {
-    var last = $(this).val().substr( $(this).val().indexOf("-") + 1 );
+    $("#telefone").on("blur", function () {
+        var last = $(this).val().substr($(this).val().indexOf("-") + 1);
 
-    if( last.length == 3 ) {
-        var move = $(this).val().substr( $(this).val().indexOf("-") - 1, 1 );
-        var lastfour = move + last;
+        if (last.length == 3) {
+            var move = $(this).val().substr($(this).val().indexOf("-") - 1, 1);
+            var lastfour = move + last;
 
-        var first = $(this).val().substr( 0, 9 );
+            var first = $(this).val().substr(0, 9);
 
-        $(this).val( first + '-' + lastfour );
-    }
-});
+            $(this).val(first + '-' + lastfour);
+        }
+    });
 }

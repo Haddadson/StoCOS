@@ -3,7 +3,6 @@ $(document).ready(() => {
     $('#filtrarAgendamentosDiv').hide();
     montarListaProdutos();
 
-
     // Tenta realizar o cadastro
     $('#cadastrar-agendamento').click(() => {
         let produto = $('#produto').data('id-produto');
@@ -119,6 +118,7 @@ function montarListaAgendamentos() {
     });
 }
 
+//Atualiza as informações do formulário ao escolher produto
 function atualizarInfos (produtoClicado){
   $("#produto").val('');
   let nomeProduto = $(produtoClicado).data("nome-produto");

@@ -12,8 +12,8 @@ function buscarRedes() {
                 $('#listaderedes').empty();
                 for (var i = 0; i < data.length; i++) {
                     var rede = data[i];
-                    $('#listaderedes').append('<a class="list-group-item list-group-item-action" ' +
-                        'id="list-home-list" data-toggle="list" href="#list-home" onclick="atualizarInfos(this.innerHTML);" role="tab" aria-controls="home">' +
+                    $('#listaderedes').append('<a class="list-group-item list-group-item-action" data-id-rede="' + rede.id + '"' +
+                        ' id="list-home-list" data-toggle="list" href="#list-home" onclick="atualizarInfos(this);" role="tab" aria-controls="home">' +
                         rede.nome +
                         '</a>');
                 }
@@ -32,37 +32,138 @@ function buscarRedes() {
 function atualizarInfos(rede) {
     $('.nenhumarede').hide();
     $('.divinfo').show();
-    atualizarCapacidade(rede);
-    atualizarTabela(rede);
+    atualizarCapacidade($(rede).data('id-rede'));
+    atualizarTabela($(rede).html());
 }
 
+// Atualizar capacidade, volumeDisponivel e volumeOcupado
 function atualizarCapacidade(rede) {
-    // Atualizar capacidade, volumeDisponivel e volumeOcupado
-    $.get('http://localhost:4567/setor/get?nome=' + rede, (data) => {
+
+    $.get('http://localhost:4567/redeCosmeticos/getOcupacao?idrede=' + rede, (data) => {
         if (data && !data.status) {
-            $('#capacidade').html(data.capacidade);
-            $('#ocupacao').html(data.ocupacao);
-            $('#volumeDisponivel').html(data.capacidade - data.ocupacao);
-            var dados = {
-                capacidade: data.capacidade,
-                volumeOcupado: data.ocupacao,
-            }
-            atualizarGraficos(dados);
-            atualizarGraficoCategoria(rede);
+            $('#info-rede').data('ocupacao', data.resultado);
+             atualizarInformacoesTela(rede);
         }
     }).done(function (data) {
-
     }).fail(function () {
-
     }).always(function () {
+    });
 
+    $.ajax({
+      type: 'GET',
+      url: 'http://localhost:4567/redeCosmeticos/getByAtributo?id=' + rede,
+      success: function (retorno) {$('#info-rede').data('capacidade', retorno[0].capacidade); atualizarInformacoesTela(rede);  },
+        contentType: "text/plain",
+      dataType: 'json'
+    });
+
+}
+
+function atualizarInformacoesTela(rede){
+
+      let ocupacao = $('#info-rede').data('ocupacao');
+      let capacidade = $('#info-rede').data('capacidade');
+
+      $('#capacidade').html(capacidade);
+      $('#ocupacao').html(ocupacao);
+      $('#volumeDisponivel').html(capacidade - ocupacao);
+      var dados = {
+          capacidade: capacidade,
+          volumeOcupado: ocupacao,
+      }
+      atualizarGraficos(dados);
+      atualizarGraficoCategoria(rede);
+}
+
+function atualizarGraficos(dados) {
+    var ocupado = (dados['volumeOcupado'] / dados['capacidade']) * 100.0;
+    var ctx = document.getElementById("capacidadeCanvas").getContext('2d');
+    var MeSeChart = new Chart(ctx, {
+        type: 'horizontalBar',
+        data: {
+            labels: [
+                "Volume (%)",
+            ],
+            datasets: [
+                {
+                    label: "Ocupado (%)",
+                    data: [ocupado],
+                    backgroundColor: ["#669911"],
+                    hoverBackgroundColor: ["#66A2EB"]
+                }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        min: 0,
+                        max: 100,
+                    }
+                }],
+                yAxes: [{
+                    stacked: true
+                }]
+            }
+        }
+    });
+}
+
+function atualizarGraficoCategoria(rede) {
+    $.get('http://localhost:4567/produto/getAll', (data) => {
+        console.log(data.length);
+        if (data.length == 0) {
+            $('#categoriasCanvas').hide();
+        } else {
+            $('#categoriasCanvas').show();
+
+            var dados = [];
+            for (let i = 0; i < data.length; i++) {
+                if (!dados[data[i].categoria]) {
+                    dados[data[i].categoria] = data[i].quantidade;
+                } else {
+                    dados[data[i].categoria] += data[i].quantidade;
+                }
+            }
+            let categorias = [];
+            let quantidades = [];
+            let cores = [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ];
+            for (let i in dados) {
+                categorias.push(i);
+                quantidades.push(dados[i]);
+                cores.push(getRandomColor());
+            }
+
+            var ctx = document.getElementById('categoriasCanvas').getContext('2d');
+            var myDoughnutChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: quantidades,
+                        backgroundColor: cores,
+                        hoverBackgroundColor: cores,
+                    }],
+
+                    labels: categorias,
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                }
+            });
+        }
     });
 }
 
 function atualizarTabela(rede) {
     $('#corpo-tabela').empty();
     var produtos = [];
-    $.get('http://localhost:4567/produto/getAll?nomerede=' + rede, (data) => {
+    $.get('http://localhost:4567/produto/getAll', (data) => {
         if (data && !data.status) {
             for (var i = 0; i < data.length; i++) {
                 produtos[i] = data[i];
@@ -158,91 +259,6 @@ function getRandomColor() {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
-}
-
-function atualizarGraficoCategoria(rede) {
-    $.get('http://localhost:4567/produto/getall?nomerede=' + rede, (data) => {
-        console.log(data.length);
-        if (data.length == 0) {
-            $('#categoriasCanvas').hide();
-        } else {
-            $('#categoriasCanvas').show();
-
-            var dados = [];
-            for (let i = 0; i < data.length; i++) {
-                if (!dados[data[i].categoria]) {
-                    dados[data[i].categoria] = data[i].quantidade;
-                } else {
-                    dados[data[i].categoria] += data[i].quantidade;
-                }
-            }
-            let categorias = [];
-            let quantidades = [];
-            let cores = [
-                "#FF6384",
-                "#36A2EB",
-                "#FFCE56"
-            ];
-            for (let i in dados) {
-                categorias.push(i);
-                quantidades.push(dados[i]);
-                cores.push(getRandomColor());
-            }
-
-            var ctx = document.getElementById('categoriasCanvas').getContext('2d');
-            var myDoughnutChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    datasets: [{
-                        data: quantidades,
-                        backgroundColor: cores,
-                        hoverBackgroundColor: cores,
-                    }],
-
-                    labels: categorias,
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                }
-            });
-        }
-    });
-}
-
-function atualizarGraficos(dados) {
-    var ocupado = (dados['volumeOcupado'] / dados['capacidade']) * 100.0;
-    var ctx = document.getElementById("capacidadeCanvas").getContext('2d');
-    var MeSeChart = new Chart(ctx, {
-        type: 'horizontalBar',
-        data: {
-            labels: [
-                "Volume (%)",
-            ],
-            datasets: [
-                {
-                    label: "Ocupado (%)",
-                    data: [ocupado],
-                    backgroundColor: ["#669911"],
-                    hoverBackgroundColor: ["#66A2EB"]
-                }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                xAxes: [{
-                    ticks: {
-                        min: 0,
-                        max: 100,
-                    }
-                }],
-                yAxes: [{
-                    stacked: true
-                }]
-            }
-        }
-    });
 }
 
 // Filtra um item na tabela
