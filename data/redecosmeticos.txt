@@ -1,0 +1,1 @@
+{"telefone":"(31)3918-4917","endereco":"Rua XYZ, 123","capacidade":50000,"nome":"Lojas Rede","id":"ac0f6454-3a38-4cc9-9033-c1f23a68f2e2","email":"lojasrede@gmail.com"}
