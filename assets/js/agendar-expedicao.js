@@ -38,6 +38,7 @@ function obterQuantidadesProdutos(){
 
   let agendamentosCadastrados = JSON.parse(localStorage.getItem("agendamentos"));
   let listaProdutos = $('#listaProdutos').children();
+  //Status: agendado, confirmado, cancelado
   let agendamentoExpedicao = {
     "idExpedicao" : agendamentosCadastrados.produtosExpedicao.length + 1,
     "nomeComprador" : $('#comprador').val(),
@@ -45,6 +46,7 @@ function obterQuantidadesProdutos(){
     "enderecoComprador" : $('#endereco').val(),
     "telefoneComprador" : $('#telefone').val(),
     "dataAgendamento" : formataData($('#data-agendamento').val(), $('#hora-entrega').val()),
+    "statusAgendamento" : "agendado",
     "listaProdutos" : []
   };
   $(listaProdutos).each(function(index, e){

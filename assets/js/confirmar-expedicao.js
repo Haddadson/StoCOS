@@ -14,51 +14,41 @@ $(document).ready(() => {
 });
 
 $(document).on('click', '#confirmarExpedicao', function (e) {
-    let identificador = $('#identificadorLote').data('identificador');
-    $.ajax({
-        type: 'GET',
-        url: "http://localhost:4567/lote/getById?id=" + identificador,
-        success: function (data) {
-            let lote = data[0];
-            lote['status'] = 2;
-            $.ajax({
-                type: 'POST',
-                url: 'http://localhost:4567/lote/update',
-                data: JSON.stringify(lote),
-                success: function (data) {
-                    alert("Expedição confirmada com sucesso.");
-                    location.reload();
-                },
-                contentType: "text/plain",
-                dataType: 'json'
-            });
+    let identificador =  $('#expedicao-selecionada').data('id-expedicao');
+    let agendamentos = localStorage.getItem("agendamentos");
+    if (!nuloOuVazio(agendamentos)) {
+      let agendamentosJSON = JSON.parse(agendamentos);
+      for (var i = 0; i < agendamentosJSON.produtosExpedicao.length; i++) {
+        if(agendamentosJSON.produtosExpedicao[i].idExpedicao == identificador){
+          if(agendamentosJSON.produtosExpedicao[i].statusAgendamento == "agendado"){
+            agendamentosJSON.produtosExpedicao[i].statusAgendamento = "confirmado";
+            localStorage.setItem('agendamentos', JSON.stringify(agendamentosJSON));
+            alert("Expedição confirmada!!");
+          } else {
+            alert("Não é possível confirmar a expedição neste status.");
+          }
         }
-    });
-
+      }
+    }
 });
 
 $(document).on('click', '#cancelarExpedicao', function (e) {
-    let identificador = $('#identificadorLote').data('identificador');
-    $.ajax({
-        type: 'GET',
-        url: "http://localhost:4567/lote/getById?id=" + identificador,
-        success: function (data) {
-            let lote = data[0];
-            lote['status'] = 3;
-            $.ajax({
-                type: 'POST',
-                url: 'http://localhost:4567/lote/update',
-                data: JSON.stringify(lote),
-                success: function (data) {
-                    alert("Cancelamento realizado com sucesso.");
-                    location.reload();
-                },
-                contentType: "text/plain",
-                dataType: 'json'
-            });
+    let identificador =  $('#expedicao-selecionada').data('id-expedicao');
+    let agendamentos = localStorage.getItem("agendamentos");
+    if (!nuloOuVazio(agendamentos)) {
+      let agendamentosJSON = JSON.parse(agendamentos);
+      for (var i = 0; i < agendamentosJSON.produtosExpedicao.length; i++) {
+        if(agendamentosJSON.produtosExpedicao[i].idExpedicao == identificador){
+          if(agendamentosJSON.produtosExpedicao[i].statusAgendamento == "agendado"){
+            agendamentosJSON.produtosExpedicao[i].statusAgendamento = "cancelado";
+            localStorage.setItem('agendamentos', JSON.stringify(agendamentosJSON));
+            alert("Expedição cancelada!!");
+          } else {
+            alert("Não é possível cancelar a expedição neste status.");
+          }
         }
-    });
-
+      }
+    }
 });
 
 
@@ -71,23 +61,32 @@ $(document).on('click', '.list-group-item', function (e) {
       let agendamentosJSON = JSON.parse(agendamentos);
       let produtosExpedicao = agendamentosJSON.produtosExpedicao;
       for (var i = 0; i < produtosExpedicao.length; i++) {
-        console.log(produtosExpedicao[i].idExpedicao);
         if(produtosExpedicao[i].idExpedicao == idExpedicao){
           informacoesProduto = produtosExpedicao[i];
         }
       }
     }
-
-    console.log(informacoesProduto);
+    $("#status-icon").html('<div class="dot"></div>');
+    let icone =  $("#status-icon").children()[0];
+    if(informacoesProduto.statusAgendamento == "confirmado"){
+      $(icone).addClass("bg-success");
+    } else if (informacoesProduto.statusAgendamento == "cancelado"){
+      $(icone).addClass("bg-danger");
+    } else {
+      $(icone).addClass("bg-warning");
+    }
     $('#nomeComprador').html("<h5><div>Comprador: " + informacoesProduto.nomeComprador + "</div></h5>");
+    $('#expedicao-selecionada').html("Id: "+ informacoesProduto.idExpedicao);
+    $('#expedicao-selecionada').attr('data-id-expedicao', informacoesProduto.idExpedicao);
     $('#emailComprador').html("<div>E-mail: " + informacoesProduto.emailComprador + "</div>");
     $('#telefoneComprador').html("<div>Telefone: " + informacoesProduto.telefoneComprador + "</div>");
     $('#dataExpedicao').html("<div>Data da Expedição prevista: " + informacoesProduto.dataAgendamento + "</div>");
+    $('#statusExpedicao').html("<div>Status da Expedição: " + informacoesProduto.statusAgendamento + "</div>");
     for(let i = 0; i < informacoesProduto.listaProdutos.length; i++){
       let produto = informacoesProduto.listaProdutos;
-      console.log(produto[i]);
       $('#listaProdutos').append('<div>Nome: ' + produto[i].nomeProduto +' Quantidade: ' + produto[i].quantidadeProduto);
     }
+
 });
 
 function montarListaExpedicoes(){
@@ -98,12 +97,20 @@ function montarListaExpedicoes(){
     if(produtosExpedicao.length > 0 ) {
       for (var i = 0; i < produtosExpedicao.length; i++) {
         let data = produtosExpedicao[i];
+        let iconeClass = "";
+        if(data.statusAgendamento == "confirmado"){
+          iconeClass = "bg-success";
+        } else if (data.statusAgendamento == "cancelado"){
+          iconeClass = "bg-danger";
+        } else {
+          iconeClass = "bg-warning";
+        }
         $('#listaExpedicoes').append('<a class="list-group-item list-group-item-action" ' +
             'id="list-home-list data-nome-comprador="' + data.nomeComprador + '" data-telefone-comprador="' + data.telefoneComprador
             + '" data-email-comprador="' + data.emailComprador +'" data-toggle="list" href="#list-home"'
             + 'role="tab" aria-controls="home" data-id-expedicao="' + data.idExpedicao + '"'
             + '> Id: ' + data.idExpedicao + ' - Comprador: '
-            + data.nomeComprador
+            + data.nomeComprador + '<div class="float-right dot '+ iconeClass +' "></div>'
             + '<br> Data de Agendamento - '
             + data.dataAgendamento
             + '<br> Telefone - '
