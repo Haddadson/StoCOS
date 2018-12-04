@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
+
+<head>
     <title>Agendar Expedição</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/logo.png"/>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/logo.png" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
         crossorigin="anonymous">
@@ -15,7 +16,7 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-sm navbar-light bg-light navbar-shadow">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light navbar-shadow">
         <div class="container">
             <a class="navbar-brand" href="#">
                 <img src="assets/imgs/logo.png" height="40px" alt="logo">
@@ -26,29 +27,37 @@
             </button>
             <div class="collapse navbar-collapse" id="collapsibleNavId">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="cadastrar-rede-cosmeticos.html"><img src="assets/imgs/cadastro.svg"
-                                height="20px"> Cadastrar</a>
+                                height="25px"> Cadastrar</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="gerenciar-rede-cosmeticos.html"><img src="assets/imgs/settings.svg"
-                                height="20px"> Gerenciar</a>
+                                height="25px"> Gerenciar</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <img src="assets/imgs/check-square.svg" height="25px">Entrega
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="cadastrar-agendamento.html">Agendamento</a>
+                            <a class="dropdown-item" href="confirmar-recebimento.html">Confirmação</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <img src="assets/imgs/delivery.svg" height="25px">Expedição
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="agendar-expedicao.html">Agendamento</a>
+                            <a class="dropdown-item" href="confirmar-expedicao.html">Confirmação</a>
+                        </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="cadastrar-agendamento.html"><img src="assets/imgs/clock.svg" height="20px">
-                            Agendar entrega</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="confirmar-recebimento.html"><img src="assets/imgs/check-square.svg"
-                                height="20px"> Confirmar Recebimento</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="agendar-expedicao.html"><img src="assets/imgs/delivery-truck.svg"
-                                height="20px"> Agendar Expedição</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="confirmar-expedicao.html"><img src="assets/imgs/delivery.svg"
-                                height="20px"> Confirmar Expedição</a>
+                        <a class="nav-link" href="indicadores.html"><img src="assets/imgs/gaugenav.svg" height="25px">
+                            Indicadores</a>
                     </li>
                 </ul>
             </div>
@@ -67,37 +76,37 @@
                 <div>
                     <form>
                         <div class="form-row">
-                          <div class="form-group col-md-12">
-                              <label for="comprador">Nome do comprador(a): </label>
-                              <input type="text" class="form-control" id="comprador" placeholder="Insira o nome do comprador"
-                                   required>
-                          </div>
+                            <div class="form-group col-md-12">
+                                <label for="comprador">Nome do comprador(a): </label>
+                                <input type="text" class="form-control" id="comprador" placeholder="Insira o nome do comprador"
+                                    required>
+                            </div>
                         </div>
                         <div class="form-row">
-                          <div class="form-group col-md-12">
-                              <label for="endereco">Endereço do comprador(a): </label>
-                              <input type="text" class="form-control" id="endereco" placeholder="Insira o endereço do comprador"
-                                  required>
-                          </div>
+                            <div class="form-group col-md-12">
+                                <label for="endereco">Endereço do comprador(a): </label>
+                                <input type="text" class="form-control" id="endereco" placeholder="Insira o endereço do comprador"
+                                    required>
+                            </div>
                         </div>
                         <div class="form-row">
-                          <div class="form-group col-md-12">
-                              <label for="email">E-mail do comprador(a): </label>
-                              <input type="email" class="form-control" id="email" placeholder="Insira o e-mail do comprador"
-                                  required>
-                          </div>
+                            <div class="form-group col-md-12">
+                                <label for="email">E-mail do comprador(a): </label>
+                                <input type="email" class="form-control" id="email" placeholder="Insira o e-mail do comprador"
+                                    required>
+                            </div>
                         </div>
                         <div class="form-row">
-                          <div class="form-group col-md-5">
-                              <label for="telefone">Telefone: </label>
-                              <input type="text" class="form-control" maxlength="14" id="telefone" placeholder="(99)99999-9999"
-                                  required />
-                          </div>
-                          <div class="form-group col-md-4">
-                              <label for="data-agendamento">Data da entrega: </label>
-                              <input type="date" class="form-control" id="data-agendamento" placeholder="dd/mm/yyyy"
-                                  required>
-                          </div>
+                            <div class="form-group col-md-5">
+                                <label for="telefone">Telefone: </label>
+                                <input type="text" class="form-control" maxlength="14" id="telefone" placeholder="(99)99999-9999"
+                                    required />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="data-agendamento">Data da entrega: </label>
+                                <input type="date" class="form-control" id="data-agendamento" placeholder="dd/mm/yyyy"
+                                    required>
+                            </div>
                         </div>
                         <div id="status-cadastro"></div>
                         <div class="d-flex flex-row-reverse">
