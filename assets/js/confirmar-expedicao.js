@@ -159,9 +159,3 @@ function montarLista() {
 
     });
 }
-
-function atualizarStatus(id, cor, msg) {
-    $(id).html(
-        '<p class="text-' + cor + '">' + msg + '</p>'
-    );
-}
