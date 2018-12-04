@@ -82,9 +82,10 @@ $(document).on('click', '.list-group-item', function (e) {
     $('#telefoneComprador').html("<div>Telefone: " + informacoesProduto.telefoneComprador + "</div>");
     $('#dataExpedicao').html("<div>Data da Expedição prevista: " + informacoesProduto.dataAgendamento + "</div>");
     $('#statusExpedicao').html("<div>Status da Expedição: " + informacoesProduto.statusAgendamento + "</div>");
+    $('#listaProdutos').html('');
     for(let i = 0; i < informacoesProduto.listaProdutos.length; i++){
       let produto = informacoesProduto.listaProdutos;
-      $('#listaProdutos').append('<div>Nome: ' + produto[i].nomeProduto +' Quantidade: ' + produto[i].quantidadeProduto);
+      $('#listaProdutos').append('<div>Nome: ' + produto[i].nomeProduto +' | Quantidade: ' + produto[i].quantidadeProduto);
     }
 
 });

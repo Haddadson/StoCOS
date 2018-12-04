@@ -4,7 +4,6 @@
 # Composição:
 
 - ## Alunos:
-  - Bernardo Fonseca Andrade de Carvalho
   - Gabriel Henrique Souza Haddad Campos
   - Lucas Branco Laborne Tavares
   - Maria Verônica Santos Soares

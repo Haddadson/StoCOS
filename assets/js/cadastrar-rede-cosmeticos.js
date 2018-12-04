@@ -15,7 +15,10 @@
             type: 'POST',
             url: 'http://localhost:4567/redecosmeticos/add',
             data: JSON.stringify(rede),
-            success: function (data) { alert('data: ' + data); },
+            success: function (data) {
+               alert('Cadastrado com sucesso: ' + data);
+               location.reload();
+             },
             contentType: "text/plain; charset=utf-8",
             dataType: 'json'
         });

@@ -12,7 +12,7 @@ $(document).ready(() => {
 });
 
 function obterRedePorNome(){
-  
+
 }
 
 // Busca as redes de cosméticos no servidor e atualiza o input dropdown
@@ -228,13 +228,23 @@ $('#adicionarProdutos').click(() => {
     let volume = $('#volume').val();
     let quantidade = $('#quantidade').val();
     let rede = $('#listaderedes a.active').html();
-
-    $.get('http://localhost:4567/produto/add?nomerede=' + rede +
-        '&nome=' + nome + '&marca=' + marca + '&categoria=' + categoria + '&volume=' + volume + '&quantidade=' + quantidade, (data) => {
-            if (data) {
-                atualizarInfos(rede);
-            }
-        });
+    let data = {
+      "nome" : nome,
+      "marca" : marca,
+      "categoria" : categoria,
+      "volume" : volume
+    };
+    $.ajax({
+        async: true,
+        type: 'POST',
+        url: "http://localhost:4567/produto/add",
+        data: data,
+        success: function (data) {
+          if (data) {
+              atualizarInfos(rede);
+          }
+        }
+    });
 });
 
 // Remove um produto
