@@ -29,7 +29,7 @@ $(document).ready(() => {
 
 
 function obterQuantidadesProdutos(){
-  if (localStorage.getItem("agendamentos") === null) {
+  if (nuloOuVazio(localStorage.getItem("agendamentos"))) {
     let agendamentos = {
       "produtosExpedicao" : []
     };
@@ -39,11 +39,12 @@ function obterQuantidadesProdutos(){
   let agendamentosCadastrados = JSON.parse(localStorage.getItem("agendamentos"));
   let listaProdutos = $('#listaProdutos').children();
   let agendamentoExpedicao = {
+    "idExpedicao" : agendamentosCadastrados.produtosExpedicao.length + 1,
     "nomeComprador" : $('#comprador').val(),
     "emailComprador" : $('#email').val(),
     "enderecoComprador" : $('#endereco').val(),
     "telefoneComprador" : $('#telefone').val(),
-    "dataAgendamento" : formataData($('#data-agendamento').val()),
+    "dataAgendamento" : formataData($('#data-agendamento').val(), $('#hora-entrega').val()),
     "listaProdutos" : []
   };
   $(listaProdutos).each(function(index, e){
@@ -61,6 +62,7 @@ function obterQuantidadesProdutos(){
     agendamentosCadastrados.produtosExpedicao.push(agendamentoExpedicao);
     localStorage.setItem('agendamentos', JSON.stringify(agendamentosCadastrados));
     alert("Agendado com sucesso");
+    location.reload();
   } else {
     alert("Preencha a quantidade de pelo menos um produto!");
   }

@@ -1,15 +1,16 @@
 $(document).ready(() => {
+  montarListaExpedicoes();
+
     $('#dadosExpedicao').hide();
-    montarLista();
+  //  montarLista();
 
     // Filtra os itens da tabela
     $("#filtrar").on("keyup", function () {
         var value = $(this).val().toLowerCase();
-        $("#listaRedes a").filter(function () {
+        $("#listaExpedicoes a").filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
-
 });
 
 $(document).on('click', '#confirmarExpedicao', function (e) {
@@ -62,82 +63,70 @@ $(document).on('click', '#cancelarExpedicao', function (e) {
 
 
 $(document).on('click', '.list-group-item', function (e) {
-    $('#dadosExpedicao').show()
-    let id_lote = $(this).attr("data-id-lote");
-    let id_rede = $(this).attr("data-id-rede");
-    var rede;
-    var lote;
-    var prod;
-    $.ajax({
-        async: false,
-        type: 'GET',
-        url: "http://localhost:4567/redecosmeticos/getById?id=" + id_rede,
-        success: function (data) {
-            $('#nomeRede').html("<h5><div>Rede: " + data[0]['nome'] + "</div></h5>");
+    $('#dadosExpedicao').show();
+    let idExpedicao = $(this).attr("data-id-expedicao");
+    let agendamentos = localStorage.getItem("agendamentos");
+    let informacoesProduto;
+    if (!nuloOuVazio(agendamentos)) {
+      let agendamentosJSON = JSON.parse(agendamentos);
+      let produtosExpedicao = agendamentosJSON.produtosExpedicao;
+      for (var i = 0; i < produtosExpedicao.length; i++) {
+        console.log(produtosExpedicao[i].idExpedicao);
+        if(produtosExpedicao[i].idExpedicao == idExpedicao){
+          informacoesProduto = produtosExpedicao[i];
         }
-    });
-    $.ajax({
-        async: false,
-        type: 'GET',
-        url: "http://localhost:4567/lote/getById?id=" + id_lote,
-        success: function (data) {
-            lote = data;
-            $('#dataEntrega').html("<div>Data da Entrega prevista: " + data[0]['data-agendamento'] + "</div>");
-            $('#dataValidade').html("<div>Data de Validade: " + data[0]['data-validade'] + "</div>");
-            $('#quantidadeProd').html("<div>Quantidade: " + data[0]['quantidade'] + "</div>");
-            $('#idLote').html('<div id="identificadorLote" data-identificador='
-                + data[0]['id']
-                + '>Identificador: '
-                + data[0]['id']
-                + '</div>');
-        }
-    });
-    $.ajax({
-        async: false,
-        type: 'GET',
-        url: "http://localhost:4567/produto/getById?id=" + lote[0]['id-produto'],
-        success: function (data) {
-            $('#nomeProd').html("<div>Produto: " + data[0]['nome'] + "</div>");
+      }
+    }
 
-        }
-    });
-
+    console.log(informacoesProduto);
+    $('#nomeComprador').html("<h5><div>Comprador: " + informacoesProduto.nomeComprador + "</div></h5>");
+    $('#emailComprador').html("<div>E-mail: " + informacoesProduto.emailComprador + "</div>");
+    $('#telefoneComprador').html("<div>Telefone: " + informacoesProduto.telefoneComprador + "</div>");
+    $('#dataExpedicao').html("<div>Data da Expedição prevista: " + informacoesProduto.dataAgendamento + "</div>");
+    for(let i = 0; i < informacoesProduto.listaProdutos.length; i++){
+      let produto = informacoesProduto.listaProdutos;
+      console.log(produto[i]);
+      $('#listaProdutos').append('<div>Nome: ' + produto[i].nomeProduto +' Quantidade: ' + produto[i].quantidadeProduto);
+    }
 });
 
-function criarDiv(id_rede, lote) {
-    $.get("http://localhost:4567/redecosmeticos/getById?id=" + id_rede, (dados_rede) => {
-        console.log(dados_rede)
-        if (dados_rede) {
-            $('#listaRedes').append('<a class="list-group-item list-group-item-action" ' +
-                'id="list-home-list'
-                + lote.id
-                + '" data-toggle="list" href="#list-home" role="tab" aria-controls="home" data-id-lote='
-                + lote.id
-                + ' data-id-rede='
-                + id_rede + '>'
-                + dados_rede[0].nome
-                + ": Data de Agendamento - "
-                + lote['data-agendamento'] + '</a>');
-
-        }
-    }).done(function (data) {
-
-    }).fail(function () {
-        $('#listaRedes').html('<div class="list-group-item text-secondary">Erro ao comunicar com o servidor.</div>');
-    }).always(function () {
-
-    });
+function montarListaExpedicoes(){
+  let agendamentos = localStorage.getItem("agendamentos");
+  if (!nuloOuVazio(agendamentos)) {
+    let agendamentosJSON = JSON.parse(agendamentos);
+    let produtosExpedicao = agendamentosJSON.produtosExpedicao;
+    if(produtosExpedicao.length > 0 ) {
+      for (var i = 0; i < produtosExpedicao.length; i++) {
+        let data = produtosExpedicao[i];
+        $('#listaExpedicoes').append('<a class="list-group-item list-group-item-action" ' +
+            'id="list-home-list data-nome-comprador="' + data.nomeComprador + '" data-telefone-comprador="' + data.telefoneComprador
+            + '" data-email-comprador="' + data.emailComprador +'" data-toggle="list" href="#list-home"'
+            + 'role="tab" aria-controls="home" data-id-expedicao="' + data.idExpedicao + '"'
+            + '> Id: ' + data.idExpedicao + ' - Comprador: '
+            + data.nomeComprador
+            + '<br> Data de Agendamento - '
+            + data.dataAgendamento
+            + '<br> Telefone - '
+            + data.telefoneComprador
+            +'</a>');
+      }
+    } else {
+      $('#listaExpedicoes').html('<div class="list-group-item text-secondary">Nenhuma expedição agendada.</div>');
+      $('#dadosExpedicao').empty();
+    }
+  }
 }
 
 // Monta a lista de redes cadastradas
 function montarLista() {
-    $('#listaRedes').html('<div class="list-group-item text-secondary">Conectando...</div>');
-    var lista = $("#listaRedes");
+    $('#listaExpedicoes').html('<div class="list-group-item text-secondary">Conectando...</div>');
+    var lista = $("#listaExpedicoes");
     var redesCadastradas = [];
     $.get("http://localhost:4567/lote/getall", (data) => {
+        $('#listaExpedicoes').empty();
+        montarListaExpedicoes();
         if (data) {
             if (data.length > 0) {
-                $('#listaRedes').empty();
                 for (var i = 0; i < data.length; i++) {
                     var lote = data[i];
                     if (lote['status'] == 1) {
@@ -147,17 +136,17 @@ function montarLista() {
                 }
                 $('#filtrarDiv').show();
             } else {
-                $('#listaRedes').html('<div class="list-group-item text-secondary">Nenhum lote cadastrado.</div>');
+                $('#listaExpedicoes').html('<div class="list-group-item text-secondary">Nenhuma expedição agendada.</div>');
                 $('#dadosExpedicao').empty();
             }
         } else {
-            $('#listaRedes').html('<div class="list-group-item text-danger">Não foi possível obter os dados.</div>');
+            $('#listaExpedicoes').html('<div class="list-group-item text-danger">Não foi possível obter os dados.</div>');
             $('#dadosExpedicao').empty();
         }
     }).done(function (data) {
 
     }).fail(function () {
-        $('#listaRedes').html('<div class="list-group-item text-secondary">Erro ao comunicar com o servidor.</div>');
+        $('#listaExpedicoes').html('<div class="list-group-item text-secondary">Erro ao comunicar com o servidor.</div>');
         $('#dadosExpedicao').empty();
     }).always(function () {
 

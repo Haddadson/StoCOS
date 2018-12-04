@@ -88,7 +88,7 @@
                           </div>
                         </div>
                         <div class="form-row">
-                          <div class="form-group col-md-5">
+                          <div class="form-group col-md-4">
                               <label for="telefone">Telefone: </label>
                               <input type="text" class="form-control" maxlength="14" id="telefone" placeholder="(99)99999-9999"
                                   required />
@@ -97,6 +97,10 @@
                               <label for="data-agendamento">Data da entrega: </label>
                               <input type="date" class="form-control" id="data-agendamento" placeholder="dd/mm/yyyy"
                                   required>
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="data-agendamento">Hora da entrega: </label>
+                              <input type="time" class="form-control" id="hora-entrega" min="9:00" max="18:00" required>
                           </div>
                         </div>
                         <div id="status-cadastro"></div>
@@ -139,6 +143,7 @@
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
         crossorigin="anonymous"></script>
+    <script type="text/javascript" src="assets/js/jquery.inputmask.bundle.js"></script>
     <script type="text/javascript" src="assets/js/main.js"></script>
     <script type="text/javascript" src="assets/js/agendar-expedicao.js"></script>
 
