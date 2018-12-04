@@ -4,36 +4,8 @@ $(document).ready(() => {
     montarListaProdutos();
 
     // Tenta realizar o cadastro
-    $('#cadastrar-agendamento').click(() => {
-        let produto = $('#produto').data('id-produto');
-        let quantidade = $('#quantidade').val();
-        let dataAgendamento = $('#data-agendamento').val();
-        let dataVencimento = $('#data-vencimento').val();
-        let idRede = "883c657a-8ce1-4ef1-bf47-1d9481afbd5e"; //Lojas Rede //TODO: Obter Rede logada
-
-        dataVencimento = formataData(dataVencimento);
-        if(!nuloOuVazio(produto) || !nuloOuVazio(quantidade) || !nuloOuVazio(dataAgendamento) || !nuloOuVazio(dataVencimento)){
-          let lote = {
-            "status" : 1,
-            "id-rede" : idRede,
-            "id-produto" : produto,
-            "quantidade" : quantidade,
-            "data-validade" : dataVencimento,
-            "data-entrega" : "0000-01-01",
-            "data-agendamento" : dataAgendamento
-          }
-          $.ajax({
-            type: 'POST',
-            url: 'http://localhost:4567/lote/add',
-            data: JSON.stringify(lote),
-            success: function (data) { if(data){$("#status-cadastro").text("Agendado com sucesso!")} montarListaAgendamentos(); },
-            contentType: "text/plain",
-            dataType: 'json'
-          });
-        } else {
-          //TODO: melhorar aviso
-          alert("Preencha todos os campos");
-        }
+    $('#agendar-venda').click(() => {
+      obterQuantidadesProdutos();
     });
 
     // Filtra os produtos da lista
@@ -55,6 +27,44 @@ $(document).ready(() => {
 });
 
 
+function obterQuantidadesProdutos(){
+  if (localStorage.getItem("agendamentos") === null) {
+    let agendamentos = {
+      "produtosExpedicao" : []
+    };
+    localStorage.setItem('agendamentos', JSON.stringify(agendamentos));
+  }
+
+  let agendamentosCadastrados = JSON.parse(localStorage.getItem("agendamentos"));
+  let listaProdutos = $('#listaProdutos').children();
+  let agendamentoExpedicao = {
+    "nomeComprador" : $('#comprador').val(),
+    "emailComprador" : $('#email').val(),
+    "enderecoComprador" : $('#endereco').val(),
+    "telefoneComprador" : $('#telefone').val(),
+    "dataAgendamento" : formataData($('#data-agendamento').val()),
+    "listaProdutos" : []
+  };
+  $(listaProdutos).each(function(index, e){
+  	let qtd = $(e).attr('data-quantidade');
+  	if(!nuloOuVazio(qtd)){
+  		let produto = {
+        "idProduto" : $(e).attr('data-id-produto'),
+        "nomeProduto" : $(e).attr('data-nome-produto'),
+        "quantidadeProduto" : qtd
+      };
+       agendamentoExpedicao.listaProdutos.push(produto);
+    }
+  });
+  if(agendamentoExpedicao.listaProdutos.length > 0){
+    agendamentosCadastrados.produtosExpedicao.push(agendamentoExpedicao);
+    localStorage.setItem('agendamentos', JSON.stringify(agendamentosCadastrados));
+  } else {
+    alert("Preencha a quantidade de pelo menos um item");
+  }
+  console.log(agendamentosCadastrados);
+}
+
 // Monta a lista de produtos cadastradas
 function montarListaProdutos() {
     $('#listaProdutos').html('<div class="list-group-item text-secondary">Conectando...</div>');
@@ -67,10 +77,10 @@ function montarListaProdutos() {
                 for (var i = 0; i < data.length; i++) {
                     var produto = data[i];
                     $('#listaProdutos').append('<div class="list-group-item list-group-item-action"'+
-                    'data-id-produto="'+ produto.id + '" data-nome-produto="' + produto.nome + '"' +
+                    'data-quantidade="" data-id-produto="'+ produto.id + '" data-nome-produto="' + produto.nome + '"' +
                     ' id="list-home-list" data-toggle="list" href="#list-home"' +
                     ' role="tab" aria-controls="home"><div class="col-md-6">' + produto.nome +
-                    '</div><div class="col-md-4"><input type="number" min="0" class="qtd-item" placeholder="Quantidade"></input></div></div>');
+                    '</div><div class="col-md-4"><input type="number" onkeyup = "atualizarItem(this)" min="0" class="qtd-item" placeholder="Quantidade"></input></div></div>');
                 }
                 $('#filtrarProdutosDiv').show();
             } else {
@@ -81,11 +91,21 @@ function montarListaProdutos() {
         }
     }).done(function (data) {
 
-    }).fail(function () {
+    }).fail(function ()   {
         $('#listaProdutos').html('<div class="list-group-item text-secondary">Erro ao comunicar com o servidor.</div>');
     }).always(function () {
 
     });
+}
+
+function atualizarItem(elemento){
+  let produto = $(elemento).parents()[1];
+  $(produto).attr('data-quantidade', $(elemento).val());
+}
+
+function itemEhValido(elemento){
+  console.log(elemento);
+  return !nuloOuVazio($(elemento).data('quantidade')) && parseInt($(elemento).data('quantidade')) > 0
 }
 
 // Monta a lista de agendamentos cadastradas
