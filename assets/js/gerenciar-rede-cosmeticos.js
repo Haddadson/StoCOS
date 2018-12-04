@@ -123,7 +123,6 @@ function atualizarGraficos(dados) {
 
 function atualizarGraficoCategoria(rede) {
     $.get('http://localhost:4567/produto/getAll', (data) => {
-        console.log(data.length);
         if (data.length == 0) {
             $('#categoriasCanvas').hide();
         } else {
@@ -189,8 +188,6 @@ function atualizarTabela(rede, idRede) {
                     var quantidade = produto['quantidade'];
                     var volume = produto['volume'];
                     $.get('http://localhost:4567/lote/getByAtributo?idrede=' + idRede, (data) => {
-                      console.log(idRede);
-                        console.log(data);
                         $('#corpo-tabela').append(
                             '<tr><th scope="row">' + id +
                             '</th><td>' + nome +
@@ -267,7 +264,6 @@ $('#mudarCapacidadeBtn').click(() => {
     let novaCapacidade = $('#novaCapacidade').val();
     $.get('http://localhost:4567/setor/alterar?nomerede=' + rede + '&novacapacidade=' + novaCapacidade, (data) => {
         if (data) {
-            console.log(data);
             atualizarInfos(rede);
         }
     });
