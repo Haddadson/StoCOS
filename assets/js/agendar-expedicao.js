@@ -59,8 +59,9 @@ function obterQuantidadesProdutos(){
   if(agendamentoExpedicao.listaProdutos.length > 0){
     agendamentosCadastrados.produtosExpedicao.push(agendamentoExpedicao);
     localStorage.setItem('agendamentos', JSON.stringify(agendamentosCadastrados));
+    alert("Agendado com sucesso");
   } else {
-    alert("Preencha a quantidade de pelo menos um item");
+    alert("Preencha a quantidade de pelo menos um produto!");
   }
   console.log(agendamentosCadastrados);
 }
