@@ -22,6 +22,11 @@
   overflow-y: scroll;
 }
 
+.scrollbar{
+    height: 600px;
+    overflow-y: scroll;
+}
+
 table {
   table-layout: fixed;
   width: 100%;

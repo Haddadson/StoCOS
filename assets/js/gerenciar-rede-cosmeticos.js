@@ -179,24 +179,53 @@ function atualizarTabela(rede, idRede) {
                 produtos[i] = data[i];
             }
             if (data.length != 0) {
-                for (let i = 0; i < produtos.length; i++) {
-                    var produto = produtos[i];
-                    var id = produto['id'];
-                    var nome = produto['nome'];
-                    var marca = produto['marca'];
-                    var categoria = produto['categoria'];
-                    var quantidade = produto['quantidade'];
-                    var volume = produto['volume'];
-                    $.get('http://localhost:4567/lote/getByAtributo?idrede=' + idRede, (data) => {
-                        $('#corpo-tabela').append(
-                            '<tr><th scope="row">' + id +
-                            '</th><td>' + nome +
-                            '</td><td>' + marca +
-                            '</td><td>' + categoria +
-                            '</td><td>' + volume +
-                            '</td><td>' + quantidade +
-                            '</td></tr>');
-                    });
+              let listaProdutos = [];
+              for (let i = 0; i < data.length; i++) {
+                  var produto = data[i];
+                  var id = produto['id'];
+                  var nome = produto['nome'];
+                  var marca = produto['marca'];
+                  var categoria = produto['categoria'];
+                  var quantidade = produto['quantidade'];
+                  var volume = produto['volume'];
+                  $.ajax({
+                      async: false,
+                      type: 'GET',
+                      url: "http://localhost:4567/lote/getAll",
+                      success: function (dataLote) {
+                        let listaLotesRede = [];
+                        for (let i = 0; i < dataLote.length; i++) {
+                          if(dataLote[i]['id-rede'] == idRede){
+                            listaLotesRede.push(dataLote[i]);
+                          }
+                        }
+                        let qtdProdutos = 0;
+                        for (let i = 0; i < listaLotesRede.length; i++) {
+                          if(listaLotesRede[i]['id-produto'] == id){
+                            qtdProdutos += listaLotesRede[i]['quantidade'];
+                          }
+                        }
+                        let produto = {
+                          idProduto: id,
+                          nome: nome,
+                          marca: marca,
+                          categoria: categoria,
+                          volume: volume,
+                          quantidade: qtdProdutos
+                        }
+                        listaProdutos.push(produto);
+                      }
+                  });
+               }
+               for(let i = 0; i < listaProdutos.length; i++){
+                 $('#corpo-tabela').append(
+                     '<tr><th scope="row">' + listaProdutos[i].idProduto +
+                     '</th><td>' + listaProdutos[i].nome +
+                     '</td><td>' + listaProdutos[i].marca +
+                     '</td><td>' + listaProdutos[i].categoria +
+                     '</td><td>' + listaProdutos[i].volume.toFixed(2) + ' cm³' +
+                     '</td><td>' + listaProdutos[i].quantidade +
+                     '</td></tr>');
                }
             } else {
                 $('#corpo-tabela').append('<tr><th scope="row"></th><td>Não há produtos cadastrados</td><td></td><td></td><td></td><td></td></tr>');
