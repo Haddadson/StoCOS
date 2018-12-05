@@ -30,6 +30,7 @@ $(document).on('click', '#confirmarExpedicao', function (e) {
         }
       }
     }
+    location.reload();
 });
 
 $(document).on('click', '#cancelarExpedicao', function (e) {
@@ -49,6 +50,7 @@ $(document).on('click', '#cancelarExpedicao', function (e) {
         }
       }
     }
+    location.reload();
 });
 
 

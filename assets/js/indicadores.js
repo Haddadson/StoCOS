@@ -6,6 +6,9 @@ $(document).ready(() => {
     montarChartRedesMaisAtivas();
     montarChartRedesMenosAtivas();
     montarChartProdutosMaisFrequentes();
+    quantidadeExpedicoesNoMes();
+    obterPorcentagemExpedicoesCanceladas();
+    obterPorcentagemExpedicoesConfirmadas();
 });
 
 function obterCapacidadeTotal() {
@@ -208,4 +211,75 @@ function montarChartProdutosMaisFrequentes() {
             }
         }
     });
+}
+
+function quantidadeExpedicoesNoMes(){
+  let agendamentos = localStorage.getItem("agendamentos");
+  let quantidadeItens = 0;
+  let dataAtual = new Date();
+  let mesAtual = dataAtual.getMonth() + 1;
+  let anoAtual = dataAtual.getFullYear();
+  if (!nuloOuVazio(agendamentos)) {
+    let agendamentosJSON = JSON.parse(agendamentos);
+    for (var i = 0; i < agendamentosJSON.produtosExpedicao.length; i++) {
+      let mesAgendamento = agendamentosJSON.produtosExpedicao[i].dataAgendamento.split('-')[1];
+      let anoAgendamento = agendamentosJSON.produtosExpedicao[i].dataAgendamento.split('-')[0];
+      if(mesAgendamento == mesAtual && anoAgendamento == anoAtual){
+        quantidadeItens++;
+      }
+    }
+    $('#expedicoesNoMes').html(quantidadeItens);
+  } else {
+    $('#expedicoesNoMes').html("0");
+  }
+}
+
+function obterPorcentagemExpedicoesCanceladas(){
+  let agendamentos = localStorage.getItem("agendamentos");
+  let quantidadeItensCancelados = 0;
+  let porcentagemItensCancelados = 0.00;
+  let dataAtual = new Date();
+  let mesAtual = dataAtual.getMonth() + 1;
+  let anoAtual = dataAtual.getFullYear();
+  if (!nuloOuVazio(agendamentos)) {
+    let agendamentosJSON = JSON.parse(agendamentos);
+    for (var i = 0; i < agendamentosJSON.produtosExpedicao.length; i++) {
+      let mesAgendamento = agendamentosJSON.produtosExpedicao[i].dataAgendamento.split('-')[1];
+      let anoAgendamento = agendamentosJSON.produtosExpedicao[i].dataAgendamento.split('-')[0];
+      if(mesAgendamento == mesAtual && anoAgendamento == anoAtual &&
+        agendamentosJSON.produtosExpedicao[i].statusAgendamento == "cancelado"){
+        quantidadeItensCancelados++;
+      }
+    }
+    porcentagemItensCancelados = (quantidadeItensCancelados / agendamentosJSON.produtosExpedicao.length) * 100;
+    $('#expedicoesCanceladas').html(porcentagemItensCancelados.toFixed(2) + " %");
+  } else {
+    $('#expedicoesCanceladas').html("0.00 %");
+  }
+
+}
+
+function obterPorcentagemExpedicoesConfirmadas(){
+  let agendamentos = localStorage.getItem("agendamentos");
+  let quantidadeItensConfirmados = 0;
+  let porcentagemItensConfirmados = 0.00;
+  let dataAtual = new Date();
+  let mesAtual = dataAtual.getMonth() + 1;
+  let anoAtual = dataAtual.getFullYear();
+  if (!nuloOuVazio(agendamentos)) {
+    let agendamentosJSON = JSON.parse(agendamentos);
+    for (var i = 0; i < agendamentosJSON.produtosExpedicao.length; i++) {
+      let mesAgendamento = agendamentosJSON.produtosExpedicao[i].dataAgendamento.split('-')[1];
+      let anoAgendamento = agendamentosJSON.produtosExpedicao[i].dataAgendamento.split('-')[0];
+      if(mesAgendamento == mesAtual && anoAgendamento == anoAtual &&
+        agendamentosJSON.produtosExpedicao[i].statusAgendamento == "confirmado"){
+        quantidadeItensConfirmados++;
+      }
+    }
+    porcentagemItensConfirmados = (quantidadeItensConfirmados / agendamentosJSON.produtosExpedicao.length) * 100;
+    $('#expedicoesConfirmadas').html(porcentagemItensConfirmados.toFixed(2) + " %");
+  } else {
+    $('#expedicoesConfirmadas').html("0.00 %");
+  }
+
 }

@@ -6,7 +6,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/logo.png"/>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
         crossorigin="anonymous">
@@ -81,8 +81,8 @@
                                 role="tab" aria-controls="home">Redes</a>
                             <a class="list-group-item list-group-item-action" data-toggle="list" href="#painelProdutos"
                                 role="tab" aria-controls="profile">Produtos </a>
-                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#painelLotes"
-                                role="tab" aria-controls="profile">Lotes </a>
+                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#painelExpedicao"
+                                role="tab" aria-controls="profile">Expedição </a>
                         </div>
                     </div>
                 </div>
@@ -175,8 +175,44 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade show" id="painelLotes" role="tabpanel">
-                        lotes
+                    <div class="tab-pane fade show" id="painelExpedicao" role="tabpanel">
+                      <div class="row">
+                          <div class="col-md-12">
+                              <div class="card" style="margin:5px">
+                                  <div class="card-body text-center">
+                                      <img class="card-img-top" height="80px" src="assets/imgs/delivery-truck.svg" alt="Card image cap"
+                                          style="margin-bottom: 30px">
+                                      <h1 class="card-title"><span id="expedicoesNoMes"></span></h1>
+                                      <h3 class="card-subtitle mb-2 text-muted">Expedições no mês: </h3>
+                                      <p class="card-text">O total de expedições agendadas para este mês</p>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="card" style="margin:5px">
+                            <div class="card-body text-center">
+                              <img class="card-img-top" height="80px" src="assets/imgs/package.svg"
+                              alt="Card image cap" style="margin-bottom: 30px">
+                              <h1 class="card-title"><span id="expedicoesCanceladas"></span></h1>
+                              <h4 class="card-subtitle mb-2 text-muted">Expedições Canceladas</h4>
+                              <p class="card-text">Porcentagem de expedições canceladas deste mês</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="card" style="margin:5px">
+                            <div class="card-body text-center">
+                              <img class="card-img-top" height="80px" src="assets/imgs/confirm-box.svg" alt="Card image cap"
+                              style="margin-bottom: 30px">
+                              <h1 class="card-title"><span id="expedicoesConfirmadas"></span></h1>
+                              <h4 class="card-subtitle mb-2 text-muted">Expedições Confirmadas</h4>
+                              <p class="card-text">Porcentagem de expedições confirmadas deste mês</p>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -199,6 +235,7 @@
 
     <!--Chart.js-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script type="text/javascript" src="assets/js/main.js"></script>
     <script src="assets/js/indicadores.js"></script>
 </body>
 
